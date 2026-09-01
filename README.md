@@ -1,49 +1,64 @@
-# 1er Año - Desarrollo de Aplicaciones Multiplataforma (DAM)
+# 1er Año — DAM
 
-## Proyectos del Primer Año
+### Desarrollo de Aplicaciones Multiplataforma
 
-Carpeta organizada con todos los ejercicios y proyectos del primer año del ciclo formativo de DAM.
+---
+
+## Descripción
+
+Repositorio que recopila todo el contenido del **primer año del Grado Superior en Desarrollo de Aplicaciones Multiplataforma**, organizado por asignaturas.
 
 ---
 
 ## Estructura
 
-| Carpeta | Contenido | Tecnologías |
-|---------|-----------|-------------|
-| `01-Programacion-Springboot` | Ejercicios de backend con Spring Boot | Java, Spring Boot, MySQL |
-| `02-Bases-de-Datos` | Ejercicios de bases de datos | SQL, MySQL, MongoDB |
-| `03-Entornos-de-Desarrollo` | Sesiones de entornos de desarrollo | Java, IDE |
-| `04-Lenguaje-de-Marcas` | Ejercicios de marcados | HTML, CSS, XML |
-| `05-Programacion` | Ejercicios de programación | Java, Python |
-| `06-Plantillas` | Templates para nuevos proyectos | Vite, JavaFX |
+```
+1er-Año-DAM/
+├── 01-Programacion-Springboot/    # Desarrollo backend con Spring Boot
+├── 02-Bases-de-Datos/             # SQL, MySQL, diseño relacional
+├── 03-Entornos-de-Desarrollo/     # Metodologías, Git, UML, entornos
+├── 04-Lenguaje-de-Marcas/         # HTML, CSS, XML
+├── 05-Programacion/               # Programación en Java (POO, excepciones, ficheros)
+├── 06-Plantillas/                 # Templates y boilerplates de proyectos
+├── 07-Trabajos/                   # Trabajos evaluables y proyectos finales
+└── README.md
+```
 
 ---
 
-## Proyectos Incluidos
+## Asignaturas
 
-### Spring Boot
-- **ejercicio1-hola-mundo** - API REST básica con Spring Boot
-- **ejercicio2** - API de biblioteca (Autores, Libros, Préstamos)
+### 01 — Programación Spring Boot
+Desarrollo de aplicaciones backend utilizando el framework Spring Boot. APIs REST, seguridad, conexión a bases de datos y arquitectura de capas.
 
-### Bases de Datos
-- Ejemplos de SQL
-- Configuración de MySQL
+### 02 — Bases de Datos
+Diseño, modelado y administración de bases de datos relacionales. SQL avanzado, normalización, diagramas E-R y optimización de consultas.
 
-### Lenguaje de Marcas
-- HTML5
-- CSS3
-- XML
+### 03 — Entornos de Desarrollo
+Metodologías ágiles, control de versiones con Git/GitHub, patrones de diseño, principios SOLID y buenas prácticas de desarrollo.
+
+### 04 — Lenguaje de Marcas
+Desarrollo web con HTML5 y CSS3. Estructura semántica, estilos, diseño responsive y frameworks CSS.
+
+### 05 — Programación
+Programación orientada a objetos en Java. Herencia, polimorfismo, excepciones, ficheros, colecciones, Lambdas y Streams.
+
+### 06 — Plantillas
+Templates y boilerplates reutilizables para proyectos con Vite, JavaFX y otras tecnologías.
+
+### 07 — Trabajos
+Trabajos evaluables de las distintas asignaturas, incluyendo proyectos finales y entregas parciales.
 
 ---
 
 ## Tecnologías Utilizadas
 
-![Java](https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-00000F?style=flat&logo=mysql&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+- **Backend:** Java, Spring Boot
+- **Bases de datos:** MySQL, SQL
+- **Frontend:** HTML5, CSS3
+- **Herramientas:** Git, GitHub, IntelliJ IDEA, VS Code
+- **Sistema operativo:** Linux (prácticas de entornos)
 
 ---
 
-*Primer año DAM - 2024/2025*
+*Primer año DAM — Curso 2025/2026*
