@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--
+    ==========================================================
+    METADATOS BÁSICOS DEL DOCUMENTO
+    ==========================================================
+  -->
+
+  <!--
+    charset="UTF-8"
+    ----------------
+    Indica la codificación de caracteres.
+    UTF-8 permite usar correctamente:
+    - tildes
+    - ñ
+    - símbolos
+    - caracteres especiales
+
+    Es una buena práctica ponerlo siempre.
+  -->
+  <meta charset="UTF-8" />
+
+  <!--
+    viewport
+    --------
+    Hace que la página se adapte correctamente a dispositivos móviles.
+
+    width=device-width
+    -> el ancho de la página será el ancho real del dispositivo
+
+    initial-scale=1.0
+    -> nivel de zoom inicial normal
+
+    Sin esta línea, el responsive de Tailwind no se comporta como esperamos.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+    ==========================================================
+    TAILWIND DESDE CDN
+    ==========================================================
+
+    Este script carga Tailwind directamente desde internet.
+
+    Ventajas:
+    - muy cómodo para aprender
+    - ideal para clase
+    - no hace falta instalar nada
+
+    Inconvenientes:
+    - no es la forma recomendada para producción real
+    - no se optimiza tanto como una instalación con npm
+    - no permite una configuración tan completa como en proyectos reales
+
+    Alternativa profesional:
+    - instalar Tailwind con npm
+    - compilar CSS
+    - personalizar tailwind.config.js
+  -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <title>Monociclos Mayteh</title>
+</head>
+
+<!--
+  ==========================================================
+  BODY
+  ==========================================================
+
+  class="bg-slate-100 text-slate-800"
+
+  1) bg-slate-100
+     - bg = background
+     - slate = familia de color gris azulado
+     - 100 = tono claro
+
+     Resultado:
+     fondo general gris muy claro.
+
+     ¿Por qué se usa?
+     - es más suave que el blanco puro
+     - hace que las tarjetas blancas destaquen más
+     - da un aspecto moderno
+
+     Alternativas:
+     - bg-white           -> fondo blanco puro
+     - bg-gray-50         -> gris aún más suave
+     - bg-slate-50        -> versión más clara
+     - bg-slate-900       -> fondo oscuro
+     - bg-blue-50         -> fondo con ligero tono azul
+
+  2) text-slate-800
+     - text = color del texto
+     - slate = misma familia de color
+     - 800 = tono oscuro
+
+     Resultado:
+     texto gris oscuro, muy legible.
+
+     ¿Por qué se usa?
+     - suele ser más agradable que text-black
+     - da un acabado visual menos agresivo
+     - combina bien con fondos claros
+
+     Alternativas:
+     - text-black         -> negro puro
+     - text-slate-900     -> casi negro
+     - text-gray-700      -> un poco más suave
+     - text-white         -> para fondos oscuros
+-->
+<body class="bg-slate-100 text-slate-800">
+
+  <!--
+    ==========================================================
+    CONTENEDOR GENERAL DE TODA LA WEB
+    ==========================================================
+
+    class="min-h-screen flex flex-col"
+
+    1) min-h-screen
+       - min-h = minimum height
+       - screen = alto de la pantalla
+
+       Equivale aproximadamente a:
+       min-height: 100vh;
+
+       ¿Qué consigue?
+       - el contenedor ocupa como mínimo toda la altura visible
+       - ayuda a construir layouts completos de página
+       - muy útil para que el footer quede abajo
+
+       Alternativas:
+       - h-screen       -> altura exacta de pantalla
+       - min-h-full     -> altura mínima del padre
+       - h-full         -> altura del padre
+
+    2) flex
+       - activa Flexbox en este div
+       - los hijos directos se ordenan con flex
+
+       Alternativas:
+       - block
+       - grid
+       - inline-flex
+
+    3) flex-col
+       - flex-direction: column
+       - los hijos se colocan en vertical
+
+       Resultado típico:
+       HEADER
+       MAIN
+       FOOTER
+
+       Alternativas:
+       - flex-row
+       - flex-col-reverse
+       - flex-row-reverse
+  -->
+  <div class="min-h-screen flex flex-col">
+
+    <!--
+      ==========================================================
+      HEADER / CABECERA
+      ==========================================================
+
+      class="bg-slate-900 text-white shadow-lg"
+
+      1) bg-slate-900
+         fondo muy oscuro, casi negro
+         muy usado en cabeceras y footers
+
+         Alternativas:
+         - bg-slate-800
+         - bg-gray-900
+         - bg-blue-700
+         - bg-black
+
+      2) text-white
+         texto blanco para generar contraste
+
+         Alternativas:
+         - text-slate-100
+         - text-gray-200
+         - text-yellow-300 (si quisieras destacar)
+
+      3) shadow-lg
+         sombra grande
+         ayuda a separar visualmente la cabecera del contenido
+
+         Alternativas:
+         - shadow-sm
+         - shadow
+         - shadow-md
+         - shadow-xl
+         - shadow-2xl
+         - sin sombra: quitar la clase
+    -->
+    <header class="bg-slate-900 text-white shadow-lg">
+
+      <!--
+        ========================================================
+        CONTENEDOR INTERNO DE LA CABECERA
+        ========================================================
+
+        class="max-w-7xl mx-auto px-4 md:px-8 py-4"
+
+        Este es un patrón muy habitual:
+        contenedor centrado + ancho máximo + padding
+
+        1) max-w-7xl
+           - máximo ancho permitido del contenido
+           - evita que en pantallas enormes todo se estire demasiado
+
+           Aproximadamente 1280px.
+
+           Alternativas:
+           - max-w-5xl
+           - max-w-6xl
+           - max-w-screen-xl
+           - max-w-full
+
+        2) mx-auto
+           - margen horizontal automático
+           - centra el bloque horizontalmente
+
+           Se suele usar junto a max-w-*.
+
+           Alternativas:
+           - sin centrar: quitar la clase
+           - ml-auto / mr-auto para casos concretos
+
+        3) px-4
+           - padding horizontal
+           - px = padding en eje x (izquierda y derecha)
+           - 4 = 1rem aprox. (16px)
+
+           Alternativas:
+           - px-2
+           - px-6
+           - px-8
+
+        4) md:px-8
+           - a partir de pantallas medianas (md), aumenta el padding lateral
+           - md suele corresponder a 768px en Tailwind
+
+           Resultado:
+           - móvil: más compacto
+           - tablet y escritorio: más aire lateral
+
+           Alternativas:
+           - sm:px-6
+           - lg:px-10
+           - xl:px-12
+
+        5) py-4
+           - padding vertical
+           - arriba y abajo
+
+           Alternativas:
+           - py-2
+           - py-6
+           - py-8
+      -->
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-4">
+
+        <!--
+          ======================================================
+          LAYOUT FLEX DE LA CABECERA
+          ======================================================
+
+          class="flex flex-col md:flex-row justify-between items-center gap-4"
+
+          Esta línea es muy importante didácticamente.
+
+          1) flex
+             activa Flexbox
+
+          2) flex-col
+             en móvil:
+             logo y menú se apilan en vertical
+
+          3) md:flex-row
+             desde md:
+             logo y menú pasan a colocarse en horizontal
+
+             Esto es responsive puro con Tailwind.
+
+             Alternativas:
+             - lg:flex-row
+             - sm:flex-row
+             - flex-row fijo siempre
+
+          4) justify-between
+             reparte el espacio horizontal dejando:
+             - un bloque al principio
+             - otro al final
+
+             Muy común en cabeceras.
+
+             Alternativas:
+             - justify-center
+             - justify-start
+             - justify-end
+             - justify-around
+             - justify-evenly
+
+          5) items-center
+             alinea los hijos en el eje perpendicular
+             en este caso, centrados verticalmente
+
+             Alternativas:
+             - items-start
+             - items-end
+             - items-stretch
+
+          6) gap-4
+             separación entre elementos hijos
+             muy útil en flex y grid
+
+             Alternativas:
+             - gap-2
+             - gap-6
+             - gap-8
+        -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+
+          <!--
+            ====================================================
+            BLOQUE DE MARCA
+            ====================================================
+
+            class="text-center md:text-left"
+
+            1) text-center
+               en móvil el texto se centra
+
+            2) md:text-left
+               en pantallas medianas o mayores se alinea a la izquierda
+
+            ¿Por qué?
+            - en móvil queda mejor centrado
+            - en escritorio, al estar junto a la navegación, queda mejor alineado a la izquierda
+
+            Alternativas:
+            - text-left
+            - text-right
+            - lg:text-center
+          -->
+          <div class="text-center md:text-left">
+
+            <!--
+              class="text-3xl md:text-4xl font-extrabold tracking-wide"
+
+              1) text-3xl
+                 tamaño grande de texto para móvil
+
+              2) md:text-4xl
+                 en pantallas medianas o mayores, aumenta el tamaño
+
+              3) font-extrabold
+                 peso de fuente muy alto (muy gruesa)
+                 ideal para logotipos o títulos
+
+                 Alternativas:
+                 - font-bold
+                 - font-black
+                 - font-semibold
+
+              4) tracking-wide
+                 aumenta un poco el espacio entre letras
+                 da un acabado más elegante o de marca
+
+                 Alternativas:
+                 - tracking-normal
+                 - tracking-wider
+                 - tracking-tight
+            -->
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">
+              Monociclos Mayteh
+            </h1>
+
+            <!--
+              class="text-slate-300 text-sm md:text-base"
+
+              1) text-slate-300
+                 color gris claro para subtítulo
+                 así no compite visualmente con el h1
+
+              2) text-sm
+                 tamaño pequeño en móvil
+
+              3) md:text-base
+                 tamaño normal en pantallas medianas
+
+              Alternativas:
+              - text-slate-400 si quieres menos contraste
+              - text-xs / text-lg según importancia
+            -->
+            <p class="text-slate-300 text-sm md:text-base">
+              Equilibrio, diversión y movimiento sobre una rueda
+            </p>
+          </div>
+
+          <!--
+            ====================================================
+            NAV
+            ====================================================
+
+            class="w-full md:w-auto"
+
+            1) w-full
+               en móvil, el nav ocupa todo el ancho disponible
+
+               Esto facilita que los enlaces puedan centrarse o envolverse bien.
+
+            2) md:w-auto
+               en pantallas medianas, el ancho vuelve a ser automático
+               solo ocupa lo que necesita
+
+            Alternativas:
+            - w-auto
+            - w-full fijo
+            - md:w-fit
+          -->
+          <nav class="w-full md:w-auto">
+
+            <!--
+              class="flex flex-wrap justify-center gap-3 md:gap-6 text-sm md:text-base font-medium"
+
+              1) flex
+                 coloca los li en línea
+
+              2) flex-wrap
+                 permite que los elementos salten de línea si no caben
+                 muy útil en móvil para no romper el diseño
+
+                 Alternativas:
+                 - flex-nowrap
+
+              3) justify-center
+                 centra los enlaces horizontalmente
+
+                 Alternativas:
+                 - justify-start
+                 - justify-between
+
+              4) gap-3
+                 espacio entre enlaces en móvil
+
+              5) md:gap-6
+                 más separación en pantallas medianas
+
+              6) text-sm
+                 tamaño reducido en móvil
+
+              7) md:text-base
+                 tamaño normal a partir de md
+
+              8) font-medium
+                 grosor intermedio
+                 más visible que normal, menos pesado que bold
+
+                 Alternativas:
+                 - font-normal
+                 - font-semibold
+            -->
+            <ul class="flex flex-wrap justify-center gap-3 md:gap-6 text-sm md:text-base font-medium">
+              <li>
+                <!--
+                  hover:text-yellow-300
+                  -> al pasar el ratón cambia a amarillo claro
+
+                  transition
+                  -> activa transiciones suaves
+
+                  duration-300
+                  -> duración de 300ms
+
+                  Alternativas:
+                  - hover:text-cyan-300
+                  - hover:underline
+                  - duration-150 / duration-500
+                -->
+                <a href="#inicio" class="hover:text-yellow-300 transition duration-300">
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <a href="#catalogo" class="hover:text-yellow-300 transition duration-300">
+                  Catálogo
+                </a>
+              </li>
+              <li>
+                <a href="#ventajas" class="hover:text-yellow-300 transition duration-300">
+                  Ventajas
+                </a>
+              </li>
+              <li>
+                <a href="#academia" class="hover:text-yellow-300 transition duration-300">
+                  Academia
+                </a>
+              </li>
+              <li>
+                <a href="#contacto" class="hover:text-yellow-300 transition duration-300">
+                  Contacto
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+    </header>
+
+    <!--
+      ==========================================================
+      HERO
+      ==========================================================
+
+      class="bg-gradient-to-r from-cyan-600 to-blue-700 text-white"
+
+      1) bg-gradient-to-r
+         crea un degradado de fondo de izquierda a derecha
+
+         Alternativas:
+         - bg-gradient-to-l
+         - bg-gradient-to-t
+         - bg-gradient-to-b
+         - sin degradado: usar bg-cyan-600
+
+      2) from-cyan-600
+         color inicial del degradado
+
+      3) to-blue-700
+         color final del degradado
+
+         También se puede añadir:
+         - via-* para color intermedio
+
+      4) text-white
+         texto blanco para contrastar con el fondo oscuro/intenso
+    -->
+    <section id="inicio" class="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">
+
+      <!--
+        Contenedor interno del hero.
+        Mismo patrón:
+        max-w + centrado + padding
+
+        py-16 md:py-24
+        ----------------
+        padding vertical amplio para dar presencia al hero
+
+        Alternativas:
+        - py-12 para menos altura
+        - py-32 para una sección más espectacular
+      -->
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
+
+        <!--
+          flex flex-col lg:flex-row items-center gap-10
+
+          1) flex
+             activa Flexbox
+
+          2) flex-col
+             en móvil: una columna
+
+          3) lg:flex-row
+             desde pantallas grandes: dos columnas horizontales
+
+             Ojo: aquí cambia en lg, no en md.
+             Eso hace que tablet siga en columna y escritorio en fila.
+
+          4) items-center
+             centra verticalmente las columnas respecto a su altura
+
+          5) gap-10
+             separación grande entre ambas columnas
+
+             Alternativas:
+             - gap-6
+             - gap-8
+             - gap-12
+        -->
+        <div class="flex flex-col lg:flex-row items-center gap-10">
+
+          <!--
+            ====================================================
+            COLUMNA IZQUIERDA DEL HERO
+            ====================================================
+
+            flex-1
+            ------
+            indica que esta columna puede crecer y compartir espacio
+            con la otra columna.
+
+            Muy habitual en layouts a dos columnas.
+
+            Alternativas:
+            - w-full
+            - basis-1/2
+            - lg:w-1/2
+          -->
+          <div class="flex-1">
+
+            <!--
+              uppercase
+              -> convierte texto a mayúsculas visualmente
+
+              tracking-[0.2em]
+              -> espaciado entre letras personalizado
+              -> corchetes permiten valor arbitrario
+              -> útil para etiquetas o subtítulos decorativos
+
+              text-cyan-100
+              -> color claro dentro del degradado
+
+              text-sm
+              -> tamaño pequeño
+
+              font-semibold
+              -> grosor seminegrita
+
+              mb-3
+              -> margin-bottom, separa del siguiente elemento
+
+              Alternativas:
+              - tracking-wide / tracking-widest
+              - text-xs / text-base
+              - font-medium / font-bold
+              - mb-2 / mb-4
+            -->
+            <p class="uppercase tracking-[0.2em] text-cyan-100 text-sm font-semibold mb-3">
+              Tienda especializada
+            </p>
+
+            <!--
+              text-4xl md:text-5xl lg:text-6xl
+              -> tamaño progresivo según pantalla
+
+              font-black
+              -> peso muy alto, incluso mayor que extrabold
+
+              leading-tight
+              -> reduce el interlineado
+              -> muy útil en títulos grandes para que no queden demasiado separados
+
+              mb-6
+              -> margen inferior
+
+              Alternativas:
+              - text-3xl / text-4xl / text-7xl
+              - font-bold / font-extrabold
+              - leading-none / leading-snug
+            -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6">
+              Descubre el mundo del monociclo con estilo
+            </h2>
+
+            <!--
+              text-lg md:text-xl
+              -> texto descriptivo relativamente grande
+
+              text-cyan-50
+              -> casi blanco, muy suave
+
+              mb-8
+              -> separación importante respecto a botones
+
+              max-w-2xl
+              -> limita ancho del párrafo para mejorar legibilidad
+
+              Alternativas:
+              - text-base / text-lg
+              - max-w-xl / max-w-3xl
+            -->
+            <p class="text-lg md:text-xl text-cyan-50 mb-8 max-w-2xl">
+              En Monociclos Mayteh encontrarás monociclos para iniciarte,
+              mejorar tu técnica o disfrutar del freestyle, el paseo urbano
+              y la aventura.
+            </p>
+
+            <!--
+              flex flex-wrap gap-4
+
+              flex
+              -> botones en línea
+
+              flex-wrap
+              -> si no caben, saltan a la siguiente línea
+
+              gap-4
+              -> espacio entre botones
+
+              Alternativas:
+              - inline-flex
+              - gap-3 / gap-6
+              - sin wrap: flex-nowrap
+            -->
+            <div class="flex flex-wrap gap-4">
+
+              <!--
+                BOTÓN PRINCIPAL
+
+                bg-yellow-400
+                -> fondo amarillo
+
+                text-slate-900
+                -> texto oscuro para contraste
+
+                font-bold
+                -> hace el CTA más visible
+
+                px-6 py-3
+                -> padding amplio tipo botón
+
+                rounded-xl
+                -> bordes muy redondeados
+                -> transmite aspecto moderno
+
+                hover:bg-yellow-300
+                -> al pasar el ratón, color algo más claro
+
+                transition duration-300
+                -> transición suave
+
+                shadow-md
+                -> sombra moderada
+
+                Alternativas:
+                - bg-cyan-500
+                - rounded-lg / rounded-2xl
+                - shadow / shadow-lg
+              -->
+              <a href="#catalogo"
+                 class="bg-yellow-400 text-slate-900 font-bold px-6 py-3 rounded-xl hover:bg-yellow-300 transition duration-300 shadow-md">
+                Ver modelos
+              </a>
+
+              <!--
+                BOTÓN SECUNDARIO
+
+                border-2
+                -> borde de 2px
+
+                border-white
+                -> borde blanco
+
+                px-6 py-3
+                -> tamaño de botón
+
+                rounded-xl
+                -> bordes redondeados
+
+                font-semibold
+                -> destacado pero algo menos que bold
+
+                hover:bg-white
+                -> fondo blanco al pasar el ratón
+
+                hover:text-blue-700
+                -> texto azul al hacer hover
+
+                transition duration-300
+                -> animación suave
+
+                Alternativas:
+                - border
+                - border-slate-200
+                - hover:bg-cyan-50
+              -->
+              <a href="#academia"
+                 class="border-2 border-white px-6 py-3 rounded-xl font-semibold hover:bg-white hover:text-blue-700 transition duration-300">
+                Aprender a montar
+              </a>
+            </div>
+          </div>
+
+          <!--
+            ====================================================
+            COLUMNA DERECHA DEL HERO
+            ====================================================
+
+            class="flex-1 w-full"
+
+            1) flex-1
+               comparte espacio con la columna izquierda
+
+            2) w-full
+               asegura que ocupe todo el ancho disponible en móvil
+
+            Alternativas:
+            - basis-1/2
+            - lg:w-1/2
+          -->
+          <div class="flex-1 w-full">
+
+            <!--
+              bg-white/10
+              ----------
+              color blanco con 10% de opacidad
+              muy útil para efecto cristal / glassmorphism
+
+              backdrop-blur-sm
+              ----------------
+              desenfoca ligeramente el fondo que hay detrás
+              funciona mejor cuando el fondo tiene color o imagen
+
+              rounded-3xl
+              -----------
+              bordes muy redondeados
+
+              p-6
+              ---
+              padding interior amplio
+
+              shadow-2xl
+              ----------
+              sombra muy marcada
+
+              border border-white/20
+              ----------------------
+              borde de 1px con blanco al 20% de opacidad
+
+              Alternativas:
+              - bg-white/20
+              - backdrop-blur
+              - rounded-2xl
+              - shadow-xl
+              - border-white/10
+            -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border border-white/20">
+
+              <!--
+                grid grid-cols-2 gap-4
+
+                1) grid
+                   activa CSS Grid
+
+                2) grid-cols-2
+                   dos columnas iguales
+
+                3) gap-4
+                   separación entre celdas
+
+                Alternativas:
+                - grid-cols-1
+                - md:grid-cols-2
+                - grid-cols-4
+              -->
+              <div class="grid grid-cols-2 gap-4">
+
+                <!--
+                  TARJETAS INTERNAS DEL PANEL
+
+                  bg-white/10
+                  -> fondo translúcido
+
+                  rounded-2xl
+                  -> bordes redondeados
+
+                  p-4
+                  -> espacio interior
+
+                  Este patrón crea mini-paneles visuales muy usados en dashboards y hero modernos.
+                -->
+                <div class="bg-white/10 rounded-2xl p-4">
+                  <p class="text-sm text-cyan-100">Modelo destacado</p>
+                  <h3 class="text-xl font-bold mt-2">Mayteh Urban Pro</h3>
+                  <p class="mt-2 text-cyan-50 text-sm">
+                    Ligero, resistente y perfecto para ciudad.
+                  </p>
+                </div>
+
+                <div class="bg-white/10 rounded-2xl p-4">
+                  <p class="text-sm text-cyan-100">Uso recomendado</p>
+                  <h3 class="text-xl font-bold mt-2">Iniciación</h3>
+                  <p class="mt-2 text-cyan-50 text-sm">
+                    Ideal para quienes empiezan a trabajar el equilibrio.
+                  </p>
+                </div>
+
+                <div class="bg-white/10 rounded-2xl p-4">
+                  <p class="text-sm text-cyan-100">Tamaño popular</p>
+                  <h3 class="text-xl font-bold mt-2">20 pulgadas</h3>
+                  <p class="mt-2 text-cyan-50 text-sm">
+                    Muy versátil para aprendizaje y trucos básicos.
+                  </p>
+                </div>
+
+                <div class="bg-white/10 rounded-2xl p-4">
+                  <p class="text-sm text-cyan-100">Comunidad</p>
+                  <h3 class="text-xl font-bold mt-2">+500 alumnos</h3>
+                  <p class="mt-2 text-cyan-50 text-sm">
+                    Personas que han aprendido con nuestro método.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!--
+      ==========================================================
+      MAIN
+      ==========================================================
+
+      class="flex-1"
+
+      flex-1 en el main
+      -----------------
+      hace que el contenido principal crezca y ocupe el espacio disponible
+      dentro del contenedor vertical general.
+
+      Esto ayuda a empujar el footer hacia abajo.
+
+      Alternativas:
+      - grow
+      - flex-auto
+      - sin clase si no necesitas ese comportamiento
+    -->
+    <main class="flex-1">
+
+      <!--
+        CONTENEDOR + GRID GENERAL DEL CONTENIDO
+
+        class="max-w-7xl mx-auto px-4 md:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8"
+
+        Ya conoces:
+        - max-w-7xl
+        - mx-auto
+        - px-4 md:px-8
+
+        Nuevas:
+        1) py-10
+           padding vertical intermedio
+
+        2) grid
+           activa CSS Grid
+
+        3) grid-cols-1
+           en móvil una sola columna
+
+        4) lg:grid-cols-3
+           en pantallas grandes, tres columnas
+
+        5) gap-8
+           separación amplia entre columnas
+
+        Resultado:
+        - móvil: contenido en una única columna
+        - escritorio: 2/3 para contenido + 1/3 para aside
+      -->
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!--
+          lg:col-span-2
+          -------------
+          en pantallas grandes esta sección ocupa 2 de las 3 columnas
+
+          space-y-10
+          ----------
+          añade separación vertical automática entre hijos directos
+
+          Muy útil para apilar secciones sin ir poniendo mb en todas.
+
+          Alternativas:
+          - lg:col-span-1 / 3
+          - space-y-6 / space-y-8 / space-y-12
+        -->
+        <section class="lg:col-span-2 space-y-10">
+
+          <!--
+            ====================================================
+            CATÁLOGO
+            ====================================================
+          -->
+          <section id="catalogo">
+            <div class="mb-6">
+              <!--
+                text-3xl
+                -> título grande
+
+                font-extrabold
+                -> peso muy alto
+
+                text-slate-900
+                -> color más oscuro que el texto base para dar jerarquía
+              -->
+              <h2 class="text-3xl font-extrabold text-slate-900">Catálogo destacado</h2>
+
+              <!--
+                text-slate-600
+                -> gris medio para texto secundario
+
+                mt-2
+                -> pequeño margen superior
+              -->
+              <p class="text-slate-600 mt-2">
+                Ejemplo de distribución con Grid para mostrar productos.
+              </p>
+            </div>
+
+            <!--
+              grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6
+
+              Responsive muy típico:
+              - móvil: 1 tarjeta por fila
+              - md: 2 tarjetas por fila
+              - xl: 3 tarjetas por fila
+
+              Alternativas:
+              - sm:grid-cols-2
+              - lg:grid-cols-3
+              - gap-4 / gap-8
+            -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+              <!--
+                TARJETA DE PRODUCTO
+
+                bg-white
+                -> fondo blanco para destacar sobre el body gris claro
+
+                rounded-2xl
+                -> bordes suaves y modernos
+
+                shadow-md
+                -> sombra media
+
+                overflow-hidden
+                -> recorta lo que sobresalga, muy útil si hay una cabecera visual
+
+                hover:shadow-xl
+                -> aumenta la sombra al pasar el ratón
+
+                transition duration-300
+                -> suaviza la animación
+
+                Alternativas:
+                - shadow / shadow-lg
+                - rounded-xl / rounded-3xl
+              -->
+              <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+
+                <!--
+                  bg-cyan-200
+                  -> fondo decorativo suave
+
+                  h-40
+                  -> altura fija de 10rem aprox.
+
+                  flex items-center justify-center
+                  -> centra el icono vertical y horizontalmente
+
+                  text-5xl
+                  -> icono grande
+
+                  Alternativas:
+                  - h-32 / h-48
+                  - bg-yellow-100 / bg-emerald-100
+                -->
+                <div class="bg-cyan-200 h-40 flex items-center justify-center text-5xl">
+                  ◉
+                </div>
+
+                <!-- p-5 = padding interior -->
+                <div class="p-5">
+                  <h3 class="text-xl font-bold">Monociclo Básico 16"</h3>
+                  <p class="text-slate-600 mt-2 text-sm">
+                    Pensado para iniciación infantil y primeros pasos.
+                  </p>
+
+                  <!--
+                    mt-4 flex justify-between items-center
+
+                    - mt-4: separación arriba
+                    - flex: precio y botón en línea
+                    - justify-between: uno a cada lado
+                    - items-center: alineados verticalmente
+                  -->
+                  <div class="mt-4 flex justify-between items-center">
+                    <span class="text-cyan-700 font-extrabold text-lg">89 €</span>
+
+                    <!--
+                      BOTÓN DE TARJETA
+
+                      bg-slate-900
+                      text-white
+                      px-4 py-2
+                      rounded-lg
+                      hover:bg-slate-700
+                      transition
+
+                      Patrón clásico de botón oscuro.
+                    -->
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition">
+                      Comprar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-yellow-200 h-40 flex items-center justify-center text-5xl">
+                  ◎
+                </div>
+                <div class="p-5">
+                  <h3 class="text-xl font-bold">Mayteh Street 20"</h3>
+                  <p class="text-slate-600 mt-2 text-sm">
+                    Muy equilibrado para aprendizaje avanzado y trucos urbanos.
+                  </p>
+                  <div class="mt-4 flex justify-between items-center">
+                    <span class="text-cyan-700 font-extrabold text-lg">149 €</span>
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition">
+                      Comprar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-emerald-200 h-40 flex items-center justify-center text-5xl">
+                  ⊙
+                </div>
+                <div class="p-5">
+                  <h3 class="text-xl font-bold">Mayteh Adventure 24"</h3>
+                  <p class="text-slate-600 mt-2 text-sm">
+                    Perfecto para trayectos largos y rutas más exigentes.
+                  </p>
+                  <div class="mt-4 flex justify-between items-center">
+                    <span class="text-cyan-700 font-extrabold text-lg">219 €</span>
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition">
+                      Comprar
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+          </section>
+
+          <!--
+            ====================================================
+            VENTAJAS
+            ====================================================
+
+            bg-white
+            rounded-3xl
+            shadow-md
+            p-6 md:p-8
+
+            Patrón de bloque o panel blanco.
+
+            p-6 md:p-8
+            ----------
+            más padding en pantallas medianas.
+
+            Alternativas:
+            - p-5 md:p-10
+            - rounded-2xl
+          -->
+          <section id="ventajas" class="bg-white rounded-3xl shadow-md p-6 md:p-8">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-6">
+              ¿Por qué elegir Monociclos Mayteh?
+            </h2>
+
+            <!--
+              flex flex-wrap gap-4
+
+              Aquí se usa Flexbox para que los bloques:
+              - estén en fila si caben
+              - salten de línea si no caben
+
+              Muy práctico para cajas informativas.
+            -->
+            <div class="flex flex-wrap gap-4">
+
+              <!--
+                flex-1
+                -> cada bloque crece para ocupar espacio disponible
+
+                min-w-[220px]
+                -> ancho mínimo arbitrario de 220px
+                -> evita que las cajas se hagan demasiado estrechas
+
+                bg-slate-100
+                -> fondo suave para separar del panel blanco exterior
+
+                rounded-2xl
+                p-5
+
+                Alternativas:
+                - min-w-[200px]
+                - basis-64
+                - bg-slate-50
+              -->
+              <div class="flex-1 min-w-[220px] bg-slate-100 rounded-2xl p-5">
+                <h3 class="font-bold text-lg mb-2">Asesoramiento</h3>
+                <p class="text-slate-600">
+                  Te ayudamos a elegir el tamaño y modelo según edad, altura y experiencia.
+                </p>
+              </div>
+
+              <div class="flex-1 min-w-[220px] bg-slate-100 rounded-2xl p-5">
+                <h3 class="font-bold text-lg mb-2">Calidad</h3>
+                <p class="text-slate-600">
+                  Trabajamos con materiales resistentes para un uso prolongado y seguro.
+                </p>
+              </div>
+
+              <div class="flex-1 min-w-[220px] bg-slate-100 rounded-2xl p-5">
+                <h3 class="font-bold text-lg mb-2">Aprendizaje</h3>
+                <p class="text-slate-600">
+                  Ofrecemos consejos, clases y recursos para progresar desde cero.
+                </p>
+              </div>
+
+            </div>
+          </section>
+
+          <!--
+            ====================================================
+            ACADEMIA
+            ====================================================
+          -->
+          <section id="academia">
+            <div class="mb-6">
+              <h2 class="text-3xl font-extrabold text-slate-900">Academia Mayteh</h2>
+              <p class="text-slate-600 mt-2">
+                Un ejemplo de cómo combinar tipografía, tarjetas y grid.
+              </p>
+            </div>
+
+            <!--
+              grid md:grid-cols-2 gap-6
+
+              - móvil: una columna
+              - md: dos columnas
+              - gap-6: espacio medio entre ellas
+            -->
+            <div class="grid md:grid-cols-2 gap-6">
+
+              <article class="bg-white rounded-2xl shadow-md p-6">
+                <h3 class="text-2xl font-bold mb-3">Curso de iniciación</h3>
+                <p class="text-slate-600 mb-4">
+                  Aprende a subir, mantener el equilibrio y realizar tus primeros recorridos.
+                </p>
+
+                <!--
+                  inline-block
+                  ------------
+                  permite que el enlace se comporte como bloque en línea
+                  para que padding, fondo y borde funcionen bien sin ocupar todo el ancho
+
+                  bg-cyan-600
+                  hover:bg-cyan-700
+                  -> botón azul con hover más oscuro
+                -->
+                <a href="#" class="inline-block bg-cyan-600 text-white px-5 py-3 rounded-xl hover:bg-cyan-700 transition">
+                  Más información
+                </a>
+              </article>
+
+              <article class="bg-white rounded-2xl shadow-md p-6">
+                <h3 class="text-2xl font-bold mb-3">Técnica y freestyle</h3>
+                <p class="text-slate-600 mb-4">
+                  Mejora giros, control del cuerpo y movimientos más técnicos sobre el monociclo.
+                </p>
+                <a href="#" class="inline-block bg-cyan-600 text-white px-5 py-3 rounded-xl hover:bg-cyan-700 transition">
+                  Ver niveles
+                </a>
+              </article>
+
+            </div>
+          </section>
+
+        </section>
+
+        <!--
+          ======================================================
+          ASIDE
+          ======================================================
+
+          class="space-y-6 lg:sticky lg:top-6 h-fit"
+
+          1) space-y-6
+             añade separación vertical entre los bloques internos
+
+          2) lg:sticky
+             desde pantallas grandes:
+             posición sticky
+
+             sticky significa que el elemento se comporta como relativo
+             hasta alcanzar cierta posición, y luego queda "pegado".
+
+          3) lg:top-6
+             cuando esté sticky, queda a 1.5rem del borde superior
+
+          4) h-fit
+             altura ajustada al contenido
+
+             Alternativas:
+             - sticky top-4
+             - self-start
+             - h-auto
+        -->
+        <aside class="space-y-6 lg:sticky lg:top-6 h-fit">
+
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-extrabold mb-4">Datos rápidos</h2>
+
+            <!--
+              space-y-3
+              -> separación vertical entre los li
+
+              text-slate-600
+              -> color base de texto de lista
+            -->
+            <ul class="space-y-3 text-slate-600">
+
+              <!--
+                flex justify-between
+                -> texto a la izquierda, dato a la derecha
+
+                border-b
+                -> borde inferior fino
+
+                pb-2
+                -> padding-bottom para separar el borde del contenido
+              -->
+              <li class="flex justify-between border-b pb-2">
+                <span>Alumnos activos</span>
+                <span class="font-bold text-slate-900">128</span>
+              </li>
+              <li class="flex justify-between border-b pb-2">
+                <span>Modelos en stock</span>
+                <span class="font-bold text-slate-900">24</span>
+              </li>
+              <li class="flex justify-between border-b pb-2">
+                <span>Talleres al mes</span>
+                <span class="font-bold text-slate-900">8</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Nivel recomendado</span>
+                <span class="font-bold text-slate-900">Todos</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-slate-900 text-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-extrabold mb-4">Promoción</h2>
+            <p class="text-slate-300 mb-4">
+              Este mes, casco y protectores con descuento al comprar un monociclo.
+            </p>
+            <a href="#contacto" class="inline-block bg-yellow-400 text-slate-900 font-bold px-5 py-3 rounded-xl hover:bg-yellow-300 transition">
+              Solicitar oferta
+            </a>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-extrabold mb-4">Consejo del día</h2>
+            <p class="text-slate-600">
+              Empieza practicando cerca de una pared o barandilla para ganar seguridad
+              antes de intentar recorridos más largos.
+            </p>
+          </div>
+
+        </aside>
+
+      </div>
+    </main>
+
+    <!--
+      ==========================================================
+      FOOTER
+      ==========================================================
+
+      bg-slate-950
+      -> fondo aún más oscuro que slate-900
+
+      text-slate-300
+      -> texto gris claro
+
+      mt-10
+      -> margen superior para separarlo del contenido principal
+
+      Alternativas:
+      - bg-slate-900
+      - mt-8 / mt-12
+    -->
+    <footer id="contacto" class="bg-slate-950 text-slate-300 mt-10">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-10">
+
+        <!--
+          grid grid-cols-1 md:grid-cols-3 gap-8
+
+          Footer responsive típico:
+          - móvil: columnas apiladas
+          - md: tres columnas
+        -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <div>
+            <h2 class="text-white text-xl font-bold mb-3">Monociclos Mayteh</h2>
+            <p>
+              Especialistas en monociclos, formación y movilidad creativa.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-white font-bold mb-3">Secciones</h3>
+
+            <!--
+              space-y-2
+              -> separación vertical entre enlaces
+            -->
+            <ul class="space-y-2">
+              <li><a href="#inicio" class="hover:text-white">Inicio</a></li>
+              <li><a href="#catalogo" class="hover:text-white">Catálogo</a></li>
+              <li><a href="#ventajas" class="hover:text-white">Ventajas</a></li>
+              <li><a href="#academia" class="hover:text-white">Academia</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-white font-bold mb-3">Contacto</h3>
+            <p>Email: info@monociclosmayteh.es</p>
+            <p>Tel: 600 123 456</p>
+            <p>Ciudad: Sevilla</p>
+          </div>
+
+        </div>
+
+        <!--
+          border-t
+          -> borde superior
+
+          border-slate-800
+          -> color del borde, sutil sobre fondo oscuro
+
+          mt-8
+          -> separación respecto al grid superior
+
+          pt-6
+          -> padding superior para que el texto no toque el borde
+
+          text-sm
+          -> tamaño pequeño, típico de textos legales o cierre
+
+          text-center
+          -> centrado horizontal
+
+          Alternativas:
+          - border-slate-700
+          - text-xs
+          - text-left
+        -->
+        <div class="border-t border-slate-800 mt-8 pt-6 text-sm text-center">
+          © 2026 Monociclos Mayteh. Página de ejemplo creada con HTML y Tailwind CSS.
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

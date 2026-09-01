@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4b0efc38-4ca3-420f-824f-10e079d42bf3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../2025-11-04/2025_11_04/src/SentenciaFor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../2025-11-04/2025_11_04/src/SentenciaWhile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../2025-11-07/EstructuraSwitch/src/DiasSemana.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../2025-11-07/EstructuraSwitch/src/MesesAnio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../2025-11-07/EstructuraSwitch/src/Operaciones.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 5/Ejercicios/src/SolucionBorja.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 6/SenteniasSeleccion/src/SentenciaSwitch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 6/Tarea_Borja_clase6/src/TareaBorja.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../SentenciasRepeticion/src/SentenciaFor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 7 y tema2/OperacionesAvanzados/src/Controller/GestorDocumental.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 7 y tema2/OperacionesAvanzados/src/Controller/GestorUsuarios.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../clase 7 y tema2/OperacionesAvanzados/src/MainUnitario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../clase 6/SenteniasSeleccion/src/TareasBorja.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../clase 6/SenteniasSeleccion/src/TareasBorja.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;acusanty16-svg&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/acusanty16-svg/miscosas1.git&quot;,
+    &quot;accountId&quot;: &quot;f7bf12da-df98-4c77-909f-869e09319720&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="35QpYkl0BxVH6zrPGCdM7SdOrLX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/acusa/OneDrive/Documents/GitHub/miscosas1/clase 7 tema3/Operadores avanzados/SolucionBorja/src/Main.java&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4b0efc38-4ca3-420f-824f-10e079d42bf3" name="Changes" comment="" />
+      <created>1763052202063</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763052202063</updated>
+    </task>
+    <servers />
+  </component>
+</project>

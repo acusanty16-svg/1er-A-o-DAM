@@ -1,0 +1,20 @@
+Esto es un ejemplo de lectura de ficheros
+Esto es otra linea en el fichero
+los flujos de ficheros:
+    Entrantes: lecturas -> obtengo el contenido
+    Salientes: escrituras -> saco el contenido
+
+    File -> carpeta (directory // file)
+        si es un fichero -> lo podemos crear con el metodo createNewFile()
+        si es carpeta -> mkdir(la ruta tiene que existir) o mkdirs(si no existe la creo)
+
+    texto plano -> .txt -> ASCII
+    Todos los flujos deben cerrarse
+
+    Lecturas
+        File -> (ponlo en modo lectura) FileReader - lee caracter a caracter ->
+        BufferedReader (lectura "grande")
+
+Escritura
+    File -> (ponlo en modo escritura) FileWriter - vas a escribir caracter a caracter
+    ->BufferedWriter (puedo poner un salto de linea)

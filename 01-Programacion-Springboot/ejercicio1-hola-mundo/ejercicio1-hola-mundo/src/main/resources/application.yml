@@ -1,0 +1,27 @@
+# Configuración principal de la aplicación Spring Boot
+spring:
+  # Conexión a la base de datos PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tienda_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  # Configuración de JPA/Hibernate
+  sql:
+    init:
+      # Ejecuta data.sql siempre que arranca la app (datos de prueba)
+      mode: always
+
+  jpa:
+    hibernate:
+      # update = crea/modifica tablas automáticamente según las entidades
+      ddl-auto: update
+    show-sql: true  # Muestra las consultas SQL en la consola (útil para debug)
+    properties:
+      hibernate:
+        format_sql: true  # Formatea el SQL para que sea más legible
+
+# Puerto donde corre la aplicación
+server:
+  port: 8080

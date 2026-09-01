@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- Declara que el documento está escrito en HTML5.
+     Es importante para que el navegador interprete correctamente las etiquetas modernas. -->
+<html lang="es">
+<!-- Etiqueta raíz del documento HTML.
+     El atributo lang="es" indica que el contenido está en español,
+     útil para SEO, lectores de pantalla y traducción automática. -->
+
+<head>
+    <!-- Contiene metadatos y configuración del documento, NO contenido visible. -->
+
+    <meta charset="UTF-8">
+    <!-- Define la codificación de caracteres.
+         UTF-8 permite usar tildes, eñes y otros caracteres especiales. -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hace que la página sea responsive en móviles.
+         width=device-width adapta el contenido al ancho del dispositivo. -->
+
+    <title>Limones Ramón Vergas</title>
+    <!-- Título que aparece en la pestaña del navegador y es clave para SEO. -->
+</head>
+
+<body>
+    <!-- Todo el contenido visible va aquí. -->
+
+    <header>
+        <!-- Cabecera del sitio.
+             Normalmente contiene el logo, título principal y menú de navegación. -->
+
+        <h1>Limones Vergas</h1>
+        <!-- Título principal de la página.
+             Solo debe haber UN <h1> por documento para buena semántica y SEO. -->
+
+        <nav>
+            <!-- Zona de navegación con enlaces a distintas secciones del sitio. -->
+
+            <a href="#" target="_top">Inicio</a>
+            <!-- target="_top" fuerza que el enlace se abra en la ventana completa,
+                 útil si la página estuviera dentro de un iframe. -->
+
+            <a href="#">Tienda</a>
+            <a href="#">Recetas</a>
+            <a href="#">Contacto</a>
+            <!-- Los enlaces usan <a>. Si no hay URL real, se usa "#". -->
+        </nav>
+
+        <figure>
+            <!-- <figure> agrupa contenido visual y su descripción relacionada. -->
+
+            <img src="tartaLimon.jpg" width="50%" alt="Rica tarta de limones" title="Tarta de limao">
+            <!-- <img> inserta una imagen.
+                 - src: ruta del archivo
+                 - width="50%": imagen ocupa el 50% del ancho del contenedor
+                 - alt: texto alternativo (obligatorio para accesibilidad)
+                 - title: texto emergente al pasar el ratón -->
+
+            <figcaption>Tarta de queso con nata</figcaption>
+            <!-- Descripción asociada a la imagen anterior.
+                 Útil para SEO y accesibilidad. -->
+        </figure>
+
+    </header>
+
+    <main>
+        <!-- Contenido principal de la página.
+             Solo debe existir un <main> por documento. -->
+
+        <article>
+            <!-- Contenido independiente y autocontenido.
+                 Se usa para noticias, posts, recetas, productos, etc. -->
+
+            <h2>Nuestra receta de limón con huevos</h2>
+            <!-- Título de nivel 2, jerárquicamente debajo del <h1>. -->
+
+            <figure>
+                <!-- Segunda figura dentro del artículo. -->
+
+                <img src="huevon.jpg" width="50%" alt="Ricos huevos con limones" title="Huevada limonera">
+                <!-- width="50%" hace la imagen responsive.
+                     El alt describe la imagen para usuarios con discapacidad visual. -->
+
+                <figcaption>Limones y huevos , qué placer</figcaption>
+                <!-- Etiqueta descriptiva de la imagen. -->
+            </figure>
+
+            <p>Rompemos los huevos y los echamos en limones</p>
+            <!-- Párrafo de texto explicando la receta. -->
+        </article>
+
+        <aside>
+            <!-- Contenido complementario al principal.
+                 Se usa para enlaces relacionados, publicidad, extras, etc. -->
+
+            <h3>Productos relacionados</h3>
+            <!-- Título de nivel 3, contiene información secundaria. -->
+
+            <ol>
+                <!-- Lista ordenada (numerada). -->
+
+                <li><a href="#">Normativa sanitaria de los limones</a></li>
+                <!-- Cada <li> es un ítem de la lista. -->
+
+                <li><a href="#">Procedencia de nuestros limones</a></li>
+            </ol>
+
+        </aside>
+
+    </main>
+
+    <footer>
+        <!-- Pie de página, generado al final del documento.
+             Suele incluir datos de contacto, autoría, derechos, enlaces secundarios. -->
+
+        <address>
+            <!-- Información de contacto del autor o la entidad. -->
+
+            Contacto:
+            <a href="mailto:info@limonesvergas.com">Enviar mail</a>
+            <!-- mailto: abre cliente de correo del usuario. -->
+        </address>
+
+        <time datetime="2025-11-25T17:00">25 de noviembre a las 17:00</time>
+        <!-- <time> marca una fecha semántica.
+             datetime usa formato ISO 8601 para lectura por máquinas (navegadores, SEO, IA). -->
+
+        <p>&copy; 2025 Limones Vergas</p>
+        <!-- Símbolo de copyright con entidad &copy; -->
+    </footer>
+
+</body>
+
+</html>

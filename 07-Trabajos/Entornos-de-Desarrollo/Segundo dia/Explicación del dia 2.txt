@@ -1,0 +1,4 @@
+En este día solo hubo dos grandes cambios en general, el primero es que el grupo encargado de realizar las tareas fundamentales ha terminado
+y gracias a que ahora hay pagina de inicio con navegación y que a su vez existe un formulario donde se pueden hacer reservas
+podemos saltarnos al siguiente paso que la redacción de las actividades semanales y ajustar algunos precios y promos. Para tener al final
+del modelo una automatización API con Google Calendar como tarjeta doing en vez de to do.

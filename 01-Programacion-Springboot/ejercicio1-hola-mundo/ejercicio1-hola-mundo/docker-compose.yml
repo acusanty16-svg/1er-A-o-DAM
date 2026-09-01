@@ -1,0 +1,19 @@
+# Docker Compose: levanta PostgreSQL en un contenedor
+# Ejecutar con: docker-compose up -d
+# Detener con: docker-compose down
+
+services:
+  postgres:
+    image: postgres:16  # Imagen oficial de PostgreSQL versión 16
+    container_name: mi_postgres  # Nombre del contenedor
+    environment:
+      POSTGRES_DB: tienda_db  # Nombre de la base de datos que se crea automáticamente
+      POSTGRES_USER: postgres  # Usuario de la base de datos
+      POSTGRES_PASSWORD: postgres  # Contraseña (en producción usar variables de entorno)
+    ports:
+      - "5432:5432"  # Puerto externo:interno
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Guarda los datos para que no se pierdan
+
+volumes:
+  postgres_data:  # Volumen persistente para los datos de PostgreSQL

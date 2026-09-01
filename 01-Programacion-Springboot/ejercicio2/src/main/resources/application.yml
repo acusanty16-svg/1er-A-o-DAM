@@ -1,0 +1,30 @@
+# Configuraci�n de la aplicaci�n
+spring:
+  application:
+    name: ejercicio2
+
+  # Conexi�n a PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5433/biblioteca_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  # Configuraci�n de JPA/Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Ejecutar data.sql al arrancar
+  sql:
+    init:
+      mode: always
+
+# Puerto de la aplicaci�n
+server:
+  port: 8081

@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=Stack+Sans+Notch:wght@200..700&display=swap');
+
+:root {
+    --secondary-background-color: #f8fdfb;
+    --font-color: #28303a;
+    --background-color: #dddde5;
+    --primary-color: #2ebbec;
+    --padding: 20px;
+    --margin: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+li {
+    list-style: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
+    color: #333;
+    background-color: var(--background-color);
+}
+
+header {
+    background: var(--primary-color);
+    color: var(--font-color);
+    padding: var(--padding);
+    margin: var(--margin);
+    text-align: center;
+    border-radius: 30px 30px 30px 0;
+    border-bottom: 1px solid var(--font-color);
+}
+
+header h1 {
+    font-family: 'Stack Sans Notch', sans-serif;
+    padding: var(--padding) var(--padding) 60px;
+}
+
+header img {
+    width: 200px;
+    border-radius: 50% 50% 50% 0;
+    margin-bottom: 60px;
+    border: 1.5px solid var(--font-color);
+}
+
+header p {
+    margin-bottom: var(--margin);
+}
+
+
+.pescado {
+    border-radius: 0 30px 30px 30px;
+    background: var(--font-color);
+    color: var(--secondary-background-color);
+    padding: var(--padding);
+    margin: var(--margin);
+}
+
+.pescado {
+    font-family: 'Stack Sans Notch', sans-serif;
+    text-align: center;
+    margin-bottom: var(--margin);
+    margin-top: var(--margin);
+
+}
+
+.content p {
+    margin: 40px var(--margin);
+}
+
+.especialidades {
+    margin: var(--margin);
+    background: var(--primary-color);
+    color: var(--font-color);
+    padding: var(--padding);
+    border-radius: 0 30px 30px 30px;
+    text-align: center;
+}
+
+.especialidades h3 {
+    border-bottom: 1px solid var(--font-color);
+}
+
+.especialidades ol {
+    margin: var(--margin);
+    padding: 10px;
+    text-align: justify;
+}
+
+.especialidades ol li {
+    margin-bottom: var(--margin);
+}
+
+.tabla-productos>h3 {
+    text-align: center;
+    background: var(--font-color);
+    color: var(--secondary-background-color);
+    padding: var(--padding);
+    font-family: 'Stack Sans Notch', sans-serif;
+    border-radius: 30px 30px 30px 0;
+    margin: var(--margin) 0;
+    padding: var(--padding) 0;
+}
+
+.tabla-productos {
+    padding: var(--padding);
+}
+
+.tabla-productos table {
+    width: 100%;
+    margin: var(--margin) auto;
+    border: 1px solid var(--font-color);
+    border-radius: 0 10px 10px 10px;
+    text-align: center;
+    background: var(--secondary-background-color);
+    overflow: hidden;
+}
+
+.tabla-productos table th {
+    background: var(--primary-color);
+    color: var(--font-color);
+    padding: var(--padding);
+    border-bottom: 1px solid var(--font-color);
+
+}
+
+
+.tabla-productos td {
+    padding: var(--padding);
+}
+
+.tabla-productos table thead>tr>th:nth-child(3) {
+    border-radius: 0 10px 0 0;
+}
+
+.tabla-productos td {
+    border: var(--font-color) 1px solid;
+}
+
+.tabla-productos tbody>tr:nth-child(4)>td:nth-child(1) {
+    border-radius: 0 0 0 10px;
+}
+
+.tabla-productos tbody>tr:nth-child(4)>td:nth-child(3) {
+    border-radius: 0 0 10px 0;
+}
+
+.sidebar {
+
+    text-align: center;
+    width: 100%;
+}
+
+.sidebar h3 {
+    border-top: 1px solid var(--font-color);
+
+}
+
+.ofertas-del-dia {
+    margin: var(--margin);
+    padding: var(--padding);
+    text-align: center;
+    color: var(--font-color);
+    background: var(--primary-color);
+    border-radius: 30px 30px 30px 0;
+
+}
+
+.ofertas-del-dia h3 {
+    border-bottom: 1px solid var(--font-color);
+    font-family: 'Stack Sans Notch', sans-serif;
+    font-size: 24px;
+}
+
+.ofertas-del-dia ul {
+    margin: var(--margin);
+    padding: 10px;
+}
+
+.contacto {
+    background: var(--background-color);
+    color: var(--font-color);
+}
+
+.contacto h2 {
+    border-radius: 0 30px 30px 30px;
+    background: var(--font-color);
+    color: var(--secondary-background-color);
+    padding: var(--padding);
+    margin: var(--margin);
+    text-align: center;
+    font-family: 'Stack Sans Notch', sans-serif;
+}
+
+form {
+    background: var(--primary-color);
+    margin: var(--margin) 0 40px;
+    padding: var(--padding);
+    border-radius: 30px 30px 30px 0;
+}
+
+form .campo {
+    display: block;
+    margin: var(--margin)/2;
+}
+
+form .campo span {
+    display: inline-block;
+    width: 100%;
+    font-weight: 600;
+    margin-top: var(--margin);
+}
+
+input[type="email"],
+input[type="text"],
+input[type="tel"],
+textarea {
+    width: 100%;
+    border: 0.5px solid var(--font-color);
+    border-radius: 2px;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+}
+
+.btn-enviar {
+    background: var(--font-color);
+    padding: var(--padding);
+    border-radius: 10px 10px 10px 0;
+
+
+}
+
+.btn-borrar {
+    background: red;
+    padding: var(--padding);
+    border-radius: 10px 10px 10px 0;
+
+}
+
+.btn-borrar:hover {
+    filter: drop-shadow(0 0 2px #000);
+    transition: 0.1s;
+}
+
+.btn-enviar:hover {
+    filter: drop-shadow(0 0 2px #000);
+    transition: 0.1s;
+}
+
+.site-footer {
+    background: var(--font-color);
+    color: var(--secondary-background-color);
+    padding: var(--padding);
+    text-align: center;
+    width: 100%;
+}

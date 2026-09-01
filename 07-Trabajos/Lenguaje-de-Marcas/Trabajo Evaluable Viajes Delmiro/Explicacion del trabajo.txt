@@ -1,0 +1,7 @@
+Hola, José.
+
+He revisado la práctica y creo que cumple con los requisitos solicitados. En cuanto al primer punto sobre la estructura semántica de HTML, he tratado de utilizar clases independientes y nombrarlas de manera que sean fácilmente identificables desde CSS, en lugar de anidarlas en los elementos hijos.
+Para los siguientes puntos, he intentado aplicar las herramientas que hemos visto durante las clases. El resultado visual quizás no sea el más elaborado, pero creo que refleja lo aprendido en clase. 
+Quizás podría haber implementado un diseño más responsive para pantallas muy pequeñas, aunque he reducido el font-size en la mayoría de los contenedores para evitar que se rompa el diseño, y creo que funciona a la perfección para pantallas mas pequeñas
+
+Muchas gracias, José, y disculpa por la cantidad de código
