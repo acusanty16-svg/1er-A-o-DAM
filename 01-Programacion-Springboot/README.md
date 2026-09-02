@@ -10,13 +10,16 @@ Este repositorio contiene el material completo de un curso de **Spring Boot** di
 
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
-| **Java** | 23 (Corretto) | Lenguaje de programación |
-| **Spring Boot** | 4.1.0 | Framework principal |
+| **Java** | 17 | Lenguaje de programación |
+| **Spring Boot** | 4.1.1 | Framework principal |
 | **Spring Data JPA** | — | Acceso a datos con JPA |
-| **Hibernate** | 7.4.1 | Implementación de JPA |
+| **Spring Security** | — | Autenticación y autorización (Fase 5) |
+| **Hibernate** | — | Implementación de JPA |
 | **PostgreSQL** | 16 | Base de datos relacional |
-| **Docker** | 29.4.2 | Contenedores para PostgreSQL |
+| **Docker** | — | Contenedores para PostgreSQL |
 | **Lombok** | — | Reducción de código boilerplate |
+| **JWT (jjwt)** | 0.12.6 | Tokens de autenticación (Fase 5) |
+| **Bean Validation** | — | Validación de datos |
 | **Maven** | Wrapper | Gestión de dependencias |
 | **IntelliJ IDEA** | 2025.2.3 Community | IDE de desarrollo |
 
@@ -31,109 +34,154 @@ El curso está dividido en **8 fases** progresivas:
 | **Fase 0** | Preparación del entorno | ✅ Completada |
 | **Fase 1** | Fundamentos de Spring Core | ✅ Completada |
 | **Fase 2** | Capa Web / REST API | ✅ Completada |
-| **Fase 3** | Capa de Datos: JPA + PostgreSQL | ⏳ Pendiente |
-| **Fase 4** | Configuración profesional | ⏳ Pendiente |
-| **Fase 5** | Seguridad (Spring Security + JWT) | ⏳ Pendiente |
+| **Fase 3** | Capa de Datos: JPA + PostgreSQL | ✅ Completada |
+| **Fase 4** | Configuración profesional | ✅ Completada |
+| **Fase 5** | Seguridad (Spring Security + JWT) | ⏳ En progreso |
 | **Fase 6** | Testing profesional | ⏳ Pendiente |
 | **Fase 7** | Producción y API docs | ⏳ Pendiente |
 | **Fase 8** | Proyecto Integrador Final | ⏳ Pendiente |
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Repositorio
 
 ```
-Programacion Springboot/
-├── README.md                          ← Este archivo
-├── PLAN_DE_ESTUDIOS.md                ← Plan detallado del curso
-├── Sesiones/                          ← Contenido teórico por fase
+01-Programacion-Springboot/
+├── README.md                              ← Este archivo
+├── PLAN_DE_ESTUDIOS.md                    ← Plan detallado del curso
+├── Sesiones/                              ← Contenido teórico por fase
 │   ├── Fase1-Fundamentos-Spring-Core.md
 │   └── Fase2-Capa-Web-REST-API.md
-└── ejercicio1-hola-mundo/            ← Proyecto principal
-    └── ejercicio1-hola-mundo/
-        ├── docker-compose.yml         ← PostgreSQL en Docker
-        ├── pom.xml                    ← Dependencias Maven
-        ├── mvnw / mvnw.cmd           ← Maven Wrapper
-        ├── data.sql                   ← Datos de prueba (30 productos)
-        └── src/main/java/com/example/ejercicio1_hola_mundo/
-            ├── Ejercicio1HolaMundoApplication.java
-            ├── HolaController.java
-            ├── component/
-            │   └── ContadorVisitas.java
-            ├── controller/
-            │   └── ProductoController.java
-            ├── dto/
-            │   ├── ProductoDTO.java
-            │   └── ProductoCreateDTO.java
-            ├── exception/
-            │   ├── ProductoNotFoundException.java
-            │   ├── ErrorResponse.java
-            │   └── GlobalExceptionHandler.java
-            ├── model/
-            │   └── Producto.java
-            ├── repository/
-            │   └── ProductoRepository.java
-            └── service/
-                ├── SaludoService.java
-                └── ProductoService.java
+│
+├── ejercicio1-hola-mundo/                 ← Proyecto 1: API de Tienda
+│   └── ejercicio1-hola-mundo/
+│       ├── docker-compose.yml             ← PostgreSQL en Docker (puerto 5432)
+│       ├── pom.xml                        ← Dependencias Maven
+│       ├── README.md                      ← Documentación del proyecto
+│       └── src/main/java/.../
+│           ├── model/Producto.java
+│           ├── repository/ProductoRepository.java
+│           ├── dto/ProductoDTO.java, ProductoCreateDTO.java
+│           ├── exception/GlobalExceptionHandler.java
+│           ├── service/ProductoService.java
+│           └── controller/ProductoController.java
+│
+└── ejercicio2/                            ← Proyecto 2: Sistema de Biblioteca
+    ├── docker-compose.yml                 ← PostgreSQL en Docker (puerto 5433)
+    ├── pom.xml                            ← Dependencias Maven
+    ├── README.md                          ← Documentación del proyecto
+    └── src/main/java/Biblioteca/ejercicio2/
+        ├── config/
+        │   └── BibliotecaConfig.java      ← @ConfigurationProperties
+        ├── model/
+        │   ├── Autor.java                 ← @OneToMany → Libro
+        │   ├── Libro.java                 ← @ManyToOne → Autor
+        │   ├── Prestamo.java              ← @ManyToOne → Libro
+        │   └── Usuario.java               ← Entidad de usuario (Fase 5)
+        ├── repository/
+        │   ├── AutorRepository.java
+        │   ├── LibroRepository.java
+        │   ├── PrestamosRepository.java
+        │   └── UsuarioRepository.java     ← Repositorio de usuarios
+        ├── DTO/
+        │   ├── AutorDTO.java, AutorCreateDTO.java
+        │   ├── LibroDTO.java, LibroCreateDTO.java
+        │   └── PrestamosDTO.java, PrestamoCreateDTO.java
+        ├── exception/
+        │   ├── AutorNotFoundException.java
+        │   ├── LibroNotFoundException.java
+        │   └── PrestamoNotFoundException.java
+        ├── service/
+        │   ├── AutorService.java
+        │   ├── LibroService.java
+        │   └── PrestamoService.java       ← Usa @Transactional y config
+        └── controller/
+            ├── AutorController.java
+            ├── LibroController.java
+            └── PrestamoController.java
 ```
 
 ---
 
-## 🛠️ Cómo Ejecutar el Proyecto
+## 🛠️ Cómo Ejecutar los Proyectos
 
 ### Prerrequisitos
 
-1. **Java 23** (Corretto o OpenJDK) instalado
+1. **Java 17+** (Corretto o OpenJDK) instalado
 2. **Docker Desktop** corriendo
 3. **IntelliJ IDEA** Community o Ultimate
 
-### Pasos
+### Proyecto 1: API de Tienda (ejercicio1)
 
 ```bash
 # 1. Navegar a la carpeta del proyecto
-cd "Programacion Springboot/ejercicio1-hola-mundo/ejercicio1-hola-mundo"
+cd "01-Programacion-Springboot/ejercicio1-hola-mundo/ejercicio1-hola-mundo"
 
 # 2. Levantar PostgreSQL con Docker
 docker-compose up -d
 
-# 3. Verificar que PostgreSQL está corriendo
-docker-compose ps
-
-# 4. Ejecutar la app con Maven Wrapper
+# 3. Ejecutar la app
 ./mvnw spring-boot:run
 
-# 5. Abrir en el navegador
+# 4. Abrir en el navegador
 # http://localhost:8080
 ```
 
-### Endpoints de la API
+### Proyecto 2: Sistema de Biblioteca (ejercicio2)
 
-| Método | URL | Descripción | Código |
-|--------|-----|-------------|--------|
-| `GET` | `/api/productos` | Listar todos los productos | 200 |
-| `GET` | `/api/productos/{id}` | Obtener un producto por ID | 200 / 404 |
-| `POST` | `/api/productos` | Crear un producto nuevo | 201 |
-| `PUT` | `/api/productos/{id}` | Actualizar un producto | 200 / 404 |
-| `DELETE` | `/api/productos/{id}` | Eliminar un producto | 204 / 404 |
+```bash
+# 1. Navegar a la carpeta del proyecto
+cd "01-Programacion-Springboot/ejercicio2"
+
+# 2. Levantar PostgreSQL con Docker
+docker-compose up -d
+
+# 3. Ejecutar la app (con profile dev)
+./mvnw spring-boot:run -Dspring.profiles.active=dev
+
+# 4. Abrir en el navegador
+# http://localhost:8081
+```
+
+### Endpoints de la API de Tienda
+
+| Método | URL | Descripción |
+|--------|-----|-------------|
+| `GET` | `/api/productos` | Listar todos los productos |
+| `GET` | `/api/productos/{id}` | Obtener un producto por ID |
+| `POST` | `/api/productos` | Crear un producto nuevo |
+| `PUT` | `/api/productos/{id}` | Actualizar un producto |
+| `DELETE` | `/api/productos/{id}` | Eliminar un producto |
+
+### Endpoints de la Biblioteca
+
+| Método | URL | Descripción |
+|--------|-----|-------------|
+| `GET` | `/api/autores` | Listar todos los autores |
+| `POST` | `/api/autores` | Crear un autor nuevo |
+| `GET` | `/api/libros` | Listar todos los libros |
+| `POST` | `/api/libros` | Crear un libro nuevo |
+| `GET` | `/api/prestamos` | Listar todos los préstamos |
+| `POST` | `/api/prestamos` | Crear un préstamo (prestar libro) |
+| `PUT` | `/api/prestamos/{id}/devolver` | Devolver un libro prestado |
 
 ### Ejemplos con PowerShell
 
 ```powershell
-# Listar productos
-Invoke-WebRequest -Uri "http://localhost:8080/api/productos" -UseBasicParsing | Select-Object -ExpandProperty Content
+# Listar autores
+Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method GET
 
-# Crear producto
-Invoke-WebRequest -Uri "http://localhost:8080/api/productos" -Method POST -Body '{"nombre": "Portatil", "precio": 999.99}' -ContentType "application/json" | Select-Object -ExpandProperty Content
+# Crear autor
+Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method POST -ContentType "application/json" -Body '{"nombre":"Gabriel Garcia Marquez"}'
 
-# Obtener producto por ID
-Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -UseBasicParsing | Select-Object -ExpandProperty Content
+# Crear libro
+Invoke-WebRequest -Uri "http://localhost:8081/api/libros" -Method POST -ContentType "application/json" -Body '{"titulo":"Cien Anos de Soledad","precio":19.99,"autorId":"ID_DEL_AUTOR"}'
 
-# Actualizar producto
-Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -Method PUT -Body '{"nombre": "Portatil Gaming", "precio": 1499.99}' -ContentType "application/json" | Select-Object -ExpandProperty Content
+# Prestar libro
+Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos" -Method POST -ContentType "application/json" -Body '{"libroId":"ID_DEL_LIBRO","usuario":"Juan Perez"}'
 
-# Eliminar producto
-Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -Method DELETE -UseBasicParsing
+# Devolver libro
+Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devolver" -Method PUT
 ```
 
 ---
@@ -164,6 +212,26 @@ Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -Method DELETE
 - **Lombok:** `@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`
 - **UUID:** Identificadores únicos en vez de auto-incremental
 
+### Fase 3 — Capa de Datos: JPA + PostgreSQL
+- **Relaciones JPA:** `@OneToMany`, `@ManyToOne`
+- **Fetch Types:** `LAZY` vs `EAGER`
+- **Consultas derivadas:** `findByXxx()` en repositorios
+- **Transacciones:** `@Transactional` para operaciones atómicas
+- **DTOs de respuesta y entrada:** Separar datos de entrada y salida
+- **Excepciones personalizadas:** `NotFoundException` para cada entidad
+
+### Fase 4 — Configuración Profesional
+- **Profiles:** `application-dev.yml` y `application-prod.yml`
+- **Variables de entorno:** Secretos fuera del código (`${DB_USERNAME}`)
+- **@ConfigurationProperties:** Configuración tipada con Java
+- **Configuración común:** `application.yml` para valores compartidos
+
+### Fase 5 — Seguridad (en progreso)
+- **Spring Security:** Framework de seguridad de Spring
+- **BCrypt:** Hashing de contraseñas
+- **JWT:** JSON Web Tokens para autenticación
+- **Roles y permisos:** `ROLE_USER`, `ROLE_ADMIN`
+
 ---
 
 ## 🎓 Metodología de Aprendizaje
@@ -182,9 +250,9 @@ Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -Method DELETE
 | 20/08/2026 | Fase 0 — Preparación del entorno | ~30 min | ✅ |
 | 26/08/2026 | Fase 1 — Fundamentos de Spring Core | ~15 min | ✅ |
 | 26/08/2026 | Fase 2 — Capa Web / REST API | ~90 min | ✅ |
-| — | Fase 3 — Capa de Datos | — | ⏳ |
-| — | Fase 4 — Configuración profesional | — | ⏳ |
-| — | Fase 5 — Seguridad | — | ⏳ |
+| 31/08/2026 | Fase 3 — Capa de Datos: JPA + PostgreSQL | ~60 min | ✅ |
+| 01/09/2026 | Fase 4 — Configuración profesional | ~30 min | ✅ |
+| 01/09/2026 | Fase 5 — Seguridad | — | ⏳ |
 | — | Fase 6 — Testing | — | ⏳ |
 | — | Fase 7 — Producción | — | ⏳ |
 | — | Fase 8 — Proyecto Final | — | ⏳ |
@@ -193,7 +261,7 @@ Invoke-WebRequest -Uri "http://localhost:8080/api/productos/{id}" -Method DELETE
 
 ## 🤝 Contribuir
 
-Este es un proyecto de aprendizaje personal. Si quieres seguir el mismo curso, clona el repositorio y ejecuta los pasos de la sección "Cómo Ejecutar el Proyecto".
+Este es un proyecto de aprendizaje personal. Si quieres seguir el mismo curso, clona el repositorio y ejecuta los pasos de la sección "Cómo Ejecutar los Proyectos".
 
 ---
 
@@ -203,4 +271,4 @@ Proyecto de aprendizaje — uso educativo.
 
 ---
 
-> **Última actualización:** 26 de Agosto de 2026
+> **Última actualización:** 01 de Septiembre de 2026
