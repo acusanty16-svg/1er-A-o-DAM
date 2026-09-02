@@ -1,0 +1,30 @@
+# Configuración para DESARROLLO
+# Se activa con: spring.profiles.active=dev
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/biblioteca_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8081
+
+# Configuración personalizada de la biblioteca
+biblioteca:
+  nombre: "Biblioteca Municipal"
+  max-prestamos: 5
+  version: "1.0"
