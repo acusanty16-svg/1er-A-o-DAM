@@ -56,10 +56,10 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - [x] Transacciones con `@Transactional`
 - **Proyecto real #2:** Sistema de biblioteca — libros, autores y préstamos con relaciones ✅
 
-### Fase 4 — Configuración profesional (Sesiones 11-12)
-- [ ] `application.yml`, profiles (`dev`, `prod`), variables de entorno para secretos
-- [ ] `@ConfigurationProperties` para configuración tipada
-- **Proyecto real #3:** Biblioteca con 2 entornos (local con Docker + producción simulada)
+### Fase 4 — Configuración profesional (Sesiones 11-12) ✅ COMPLETADA
+- [x] `application.yml`, profiles (`dev`, `prod`), variables de entorno para secretos
+- [x] `@ConfigurationProperties` para configuración tipada
+- **Proyecto real #3:** Biblioteca con 2 entornos (local con Docker + producción simulada) ✅
 
 ### Fase 5 — Seguridad (Sesiones 13-15)
 - [ ] Spring Security: autenticación y autorización
@@ -117,7 +117,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 **Fase 1:** [x] Completada (Sesión 2 — 26/08/2026)
 **Fase 2:** [x] Completada (Sesión 2 — 26/08/2026)
 **Fase 3:** [x] Completada (Sesión 3 — 31/08/2026)
-**Fase 4:** [ ] Pendiente
+**Fase 4:** [x] Completada (Sesión 4 — 01/09/2026)
 **Fase 5:** [ ] Pendiente
 **Fase 6:** [ ] Pendiente
 **Fase 7:** [ ] Pendiente
@@ -204,6 +204,26 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - `ddl-auto: create-drop` temporalmente para recrear tablas, luego `update`
 
 **Próxima sesión (Fase 4):** Configuración profesional — profiles, `@ConfigurationProperties`, variables de entorno
+
+### Sesión 4 — 01/09/2026 · Fase 4 ✅
+**Qué hicimos hoy:**
+- **Teoría:** Aprendimos sobre profiles (dev/prod), variables de entorno para secretos y `@ConfigurationProperties` para configuración tipada
+- **Profiles:** Creamos `application-dev.yml` y `application-prod.yml` con configuración específica para cada entorno
+- **Variables de entorno:** Configuramos produccion para usar `${DB_USERNAME}`, `${DB_PASSWORD}` (secretos fuera del código)
+- **@ConfigurationProperties:** Creamos `BibliotecaConfig.java` para leer configuración personalizada de `application.yml`
+- **Modificación:** Actualizamos `PrestamoService.java` para usar `BibliotecaConfig` y verificar límite de préstamos
+
+**Problemas resueltos:**
+- Configuración `biblioteca` anidada incorrectamente bajo `spring:` — movida a la raíz
+- `PrestamoService` no usaba la configuración tipada — añadido constructor y verificación
+
+**Decisiones tomadas:**
+- Puerto 5433 para desarrollo, 8080 para producción
+- `ddl-auto: update` en desarrollo, `validate` en producción
+- `show-sql: true` en desarrollo, `false` en producción
+- Límite de 5 préstamos configurado en `application-dev.yml`
+
+**Próxima sesión (Fase 5):** Seguridad — Spring Security, JWT, roles y permisos
 
 ---
 
