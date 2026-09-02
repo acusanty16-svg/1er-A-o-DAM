@@ -41,3 +41,10 @@ VALUES (gen_random_uuid(), 'Veinte Poemas de Amor', 9.99, false, (SELECT id FROM
 
 INSERT INTO libros (id, titulo, precio, prestado, autor_id)
 VALUES (gen_random_uuid(), 'Cien Sonetos de Amor', 11.99, false, (SELECT id FROM autores WHERE nombre = 'Pablo Neruda'));
+
+-- Usuarios de prueba (contraseña: "password123" cifrada con BCrypt)
+INSERT INTO usuarios (id, username, password, email, role)
+VALUES (gen_random_uuid(), 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin@biblioteca.com', 'ROLE_ADMIN');
+
+INSERT INTO usuarios (id, username, password, email, role)
+VALUES (gen_random_uuid(), 'usuario', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'usuario@biblioteca.com', 'ROLE_USER');

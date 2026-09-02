@@ -36,7 +36,7 @@ El curso está dividido en **8 fases** progresivas:
 | **Fase 2** | Capa Web / REST API | ✅ Completada |
 | **Fase 3** | Capa de Datos: JPA + PostgreSQL | ✅ Completada |
 | **Fase 4** | Configuración profesional | ✅ Completada |
-| **Fase 5** | Seguridad (Spring Security + JWT) | ⏳ En progreso |
+| **Fase 5** | Seguridad (Spring Security + JWT) | ✅ Completada |
 | **Fase 6** | Testing profesional | ⏳ Pendiente |
 | **Fase 7** | Producción y API docs | ⏳ Pendiente |
 | **Fase 8** | Proyecto Integrador Final | ⏳ Pendiente |
@@ -77,6 +77,7 @@ El curso está dividido en **8 fases** progresivas:
         │   ├── Autor.java                 ← @OneToMany → Libro
         │   ├── Libro.java                 ← @ManyToOne → Autor
         │   ├── Prestamo.java              ← @ManyToOne → Libro
+        │   ├── Role.java                  ← Enum de roles (Fase 5)
         │   └── Usuario.java               ← Entidad de usuario (Fase 5)
         ├── repository/
         │   ├── AutorRepository.java
@@ -86,16 +87,25 @@ El curso está dividido en **8 fases** progresivas:
         ├── DTO/
         │   ├── AutorDTO.java, AutorCreateDTO.java
         │   ├── LibroDTO.java, LibroCreateDTO.java
-        │   └── PrestamosDTO.java, PrestamoCreateDTO.java
+        │   ├── PrestamosDTO.java, PrestamoCreateDTO.java
+        │   ├── LoginDTO.java              ← DTO de login (Fase 5)
+        │   ├── UsuarioCreateDTO.java      ← DTO de registro (Fase 5)
+        │   └── UsuarioDTO.java            ← DTO de respuesta (Fase 5)
         ├── exception/
         │   ├── AutorNotFoundException.java
         │   ├── LibroNotFoundException.java
         │   └── PrestamoNotFoundException.java
+        ├── security/
+        │   ├── JwtAuthenticationFilter.java  ← Filtro JWT (Fase 5)
+        │   └── SecurityConfig.java           ← Configuración de seguridad (Fase 5)
         ├── service/
         │   ├── AutorService.java
         │   ├── LibroService.java
-        │   └── PrestamoService.java       ← Usa @Transactional y config
+        │   ├── PrestamoService.java       ← Usa @Transactional y config
+        │   ├── JwtService.java            ← Servicio JWT (Fase 5)
+        │   └── UsuarioService.java        ← Servicio de usuarios (Fase 5)
         └── controller/
+            ├── AuthController.java        ← Endpoints de auth (Fase 5)
             ├── AutorController.java
             ├── LibroController.java
             └── PrestamoController.java
@@ -155,33 +165,41 @@ docker-compose up -d
 
 ### Endpoints de la Biblioteca
 
-| Método | URL | Descripción |
-|--------|-----|-------------|
-| `GET` | `/api/autores` | Listar todos los autores |
-| `POST` | `/api/autores` | Crear un autor nuevo |
-| `GET` | `/api/libros` | Listar todos los libros |
-| `POST` | `/api/libros` | Crear un libro nuevo |
-| `GET` | `/api/prestamos` | Listar todos los préstamos |
-| `POST` | `/api/prestamos` | Crear un préstamo (prestar libro) |
-| `PUT` | `/api/prestamos/{id}/devolver` | Devolver un libro prestado |
+| Método | URL | Descripción | Acceso |
+|--------|-----|-------------|--------|
+| `POST` | `/api/auth/register` | Registrar usuario nuevo | Público |
+| `POST` | `/api/auth/login` | Iniciar sesión y obtener token | Público |
+| `GET` | `/api/autores` | Listar todos los autores | Público |
+| `POST` | `/api/autores` | Crear un autor nuevo | Admin |
+| `GET` | `/api/libros` | Listar todos los libros | Público |
+| `POST` | `/api/libros` | Crear un libro nuevo | Público |
+| `GET` | `/api/prestamos` | Listar todos los préstamos | Autenticado |
+| `POST` | `/api/prestamos` | Crear un préstamo (prestar libro) | Autenticado |
+| `PUT` | `/api/prestamos/{id}/devolver` | Devolver un libro prestado | Autenticado |
 
 ### Ejemplos con PowerShell
 
 ```powershell
-# Listar autores
-Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method GET
+# Registrar usuario
+Invoke-WebRequest -Uri "http://localhost:8081/api/auth/register" -Method POST -ContentType "application/json" -Body '{"username":"juan","password":"password123","email":"juan@email.com"}'
 
-# Crear autor
-Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method POST -ContentType "application/json" -Body '{"nombre":"Gabriel Garcia Marquez"}'
+# Iniciar sesión y obtener token
+Invoke-WebRequest -Uri "http://localhost:8081/api/auth/login" -Method POST -ContentType "application/json" -Body '{"username":"admin","password":"password123"}'
+
+# Listar autores (requiere token)
+Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method GET -Headers @{"Authorization"="Bearer TOKEN_AQUI"}
+
+# Crear autor (requiere token de admin)
+Invoke-WebRequest -Uri "http://localhost:8081/api/autores" -Method POST -ContentType "application/json" -Headers @{"Authorization"="Bearer TOKEN_AQUI"} -Body '{"nombre":"Gabriel Garcia Marquez"}'
 
 # Crear libro
 Invoke-WebRequest -Uri "http://localhost:8081/api/libros" -Method POST -ContentType "application/json" -Body '{"titulo":"Cien Anos de Soledad","precio":19.99,"autorId":"ID_DEL_AUTOR"}'
 
-# Prestar libro
-Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos" -Method POST -ContentType "application/json" -Body '{"libroId":"ID_DEL_LIBRO","usuario":"Juan Perez"}'
+# Prestar libro (requiere token)
+Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos" -Method POST -ContentType "application/json" -Headers @{"Authorization"="Bearer TOKEN_AQUI"} -Body '{"libroId":"ID_DEL_LIBRO"}'
 
 # Devolver libro
-Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devolver" -Method PUT
+Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devolver" -Method PUT -Headers @{"Authorization"="Bearer TOKEN_AQUI"}
 ```
 
 ---
@@ -226,11 +244,15 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 - **@ConfigurationProperties:** Configuración tipada con Java
 - **Configuración común:** `application.yml` para valores compartidos
 
-### Fase 5 — Seguridad (en progreso)
+### Fase 5 — Seguridad (Spring Security + JWT)
 - **Spring Security:** Framework de seguridad de Spring
-- **BCrypt:** Hashing de contraseñas
-- **JWT:** JSON Web Tokens para autenticación
-- **Roles y permisos:** `ROLE_USER`, `ROLE_ADMIN`
+- **BCrypt:** Hashing de contraseñas con `PasswordEncoder`
+- **JWT:** JSON Web Tokens para autenticación stateless
+- **Roles y permisos:** `ROLE_USER`, `ROLE_ADMIN` con Enum
+- **Filtros JWT:** `JwtAuthenticationFilter` para validar tokens
+- **SecurityConfig:** Configuración de endpoints protegidos
+- **AuthenticationManager:** Gestión de autenticación
+- **DTOs de seguridad:** `LoginDTO`, `UsuarioCreateDTO`, `UsuarioDTO`
 
 ---
 
@@ -252,7 +274,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 | 26/08/2026 | Fase 2 — Capa Web / REST API | ~90 min | ✅ |
 | 31/08/2026 | Fase 3 — Capa de Datos: JPA + PostgreSQL | ~60 min | ✅ |
 | 01/09/2026 | Fase 4 — Configuración profesional | ~30 min | ✅ |
-| 01/09/2026 | Fase 5 — Seguridad | — | ⏳ |
+| 01/09/2026 | Fase 5 — Seguridad | ~60 min | ✅ |
 | — | Fase 6 — Testing | — | ⏳ |
 | — | Fase 7 — Producción | — | ⏳ |
 | — | Fase 8 — Proyecto Final | — | ⏳ |
@@ -271,4 +293,4 @@ Proyecto de aprendizaje — uso educativo.
 
 ---
 
-> **Última actualización:** 01 de Septiembre de 2026
+> **Última actualización:** 02 de Septiembre de 2026
