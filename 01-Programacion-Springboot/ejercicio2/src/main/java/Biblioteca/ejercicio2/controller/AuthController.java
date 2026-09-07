@@ -1,20 +1,21 @@
 package Biblioteca.ejercicio2.controller;
 
 import Biblioteca.ejercicio2.DTO.LoginDTO;
+import Biblioteca.ejercicio2.DTO.LoginResponseDTO;
 import Biblioteca.ejercicio2.DTO.UsuarioCreateDTO;
 import Biblioteca.ejercicio2.DTO.UsuarioDTO;
+import Biblioteca.ejercicio2.exception.CredencialesInvalidasException;
 import Biblioteca.ejercicio2.service.JwtService;
 import Biblioteca.ejercicio2.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -38,12 +39,16 @@ public class AuthController {
 
     //Iniciar sesion y obtener token JWT
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDTO dto){
-        //autenticar usuario
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-        //Si llegamos aqui la autenticacion fue exitosa
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO dto){
+        try {
+            //autenticar usuario
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+            //Si llegamos aqui la autenticacion fue exitosa
+        }catch (BadCredentialsException e){
+            throw new CredencialesInvalidasException("Credenciales invalidas");
+        }
         String token = jwtService.generateToken(dto.getUsername());
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }

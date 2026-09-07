@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -14,13 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
-/**
- * Filtro JWT que se ejecuta en cada petición.
- * 1. Extrae el token del header Authorization
- * 2. Valida el token
- * 3. Si es válido, autentica al usuario en el contexto de seguridad
- */
+import java.time.LocalDateTime;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -34,31 +29,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //Paso 1: Obtener el header Authorization
         final String authHeader = request.getHeader("Authorization");
 
-        //Paso 2: Si no hay header o no empiezar "Bearer", dejar pasar
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        //Paso 3: extraer el token (quitar "Bearer " del inicio)
         final String jwt = authHeader.substring(7);
 
-        //Paso 4: Extraer el username del token
-        final String userEmail = jwtService.extractUsername(jwt);
+        final String userEmail;
+        try {
+            userEmail = jwtService.extractUsername(jwt);
+        } catch (Exception e) {
+            writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token inválido", request.getRequestURI());
+            return;
+        }
 
-        //Paso 5: Si hay username  y no hay actualizacion previa
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (userEmail == null) {
+            writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token inválido", request.getRequestURI());
+            return;
+        }
 
-            //Paso 6: Buscar el nombre de usuario en la base de datos
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             Usuario usuario = usuarioRepository.findByUsername(userEmail).orElse(null);
 
-            //Paso 7: Si el usuario existe y el token es valido
-            if (usuario != null && jwtService.isTokenValid(jwt, usuario.getUsername())){
-
-                //Paso 8: Autenticar al usuario con el contexto de seguridad
+            if (usuario != null && jwtService.isTokenValid(jwt, usuario.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         usuario,
                         null,
@@ -67,9 +63,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Usuario no encontrado", request.getRequestURI());
+                return;
             }
         }
-        //Paso 9: Continuar con la cadena de filtros
         filterChain.doFilter(request, response);
+    }
+
+    private void writeErrorResponse(HttpServletResponse response, int status, String message, String path) throws IOException {
+        response.setStatus(status);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+
+        String json = String.format(
+                "{\"timestamp\":\"%s\",\"status\":%d,\"error\":\"%s\",\"message\":\"%s\",\"path\":\"%s\"}",
+                LocalDateTime.now(),
+                status,
+                status == 401 ? "Unauthorized" : "Forbidden",
+                message,
+                path
+        );
+
+        response.getWriter().write(json);
+        response.getWriter().flush();
     }
 }

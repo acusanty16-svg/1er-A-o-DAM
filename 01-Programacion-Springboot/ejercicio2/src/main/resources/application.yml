@@ -2,3 +2,5 @@
 spring:
   application:
     name: ejercicio2
+  profiles:
+    active: dev

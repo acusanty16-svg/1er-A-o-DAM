@@ -2,6 +2,7 @@ package Biblioteca.ejercicio2.service;
 
 import Biblioteca.ejercicio2.DTO.UsuarioCreateDTO;
 import Biblioteca.ejercicio2.DTO.UsuarioDTO;
+import Biblioteca.ejercicio2.exception.UsuarioDuplicadoException;
 import Biblioteca.ejercicio2.model.Role;
 import Biblioteca.ejercicio2.model.Usuario;
 import Biblioteca.ejercicio2.repository.UsuarioRepository;
@@ -39,11 +40,11 @@ public class UsuarioService {
     public UsuarioDTO register(UsuarioCreateDTO dto){
         //Verificar si ya existe el username
         if (usuarioRepository.existsByUsername(dto.getUsername())){
-            throw new RuntimeException("El nombre de usuario ya existe");
+            throw new UsuarioDuplicadoException("El nombre de usuario ya existe");
         }
         //Verificar si ya existe el email
         if (usuarioRepository.existsByEmail(dto.getEmail())){
-            throw new RuntimeException("El email ya esta registrado");
+            throw new UsuarioDuplicadoException("El email ya esta registrado");
         }
         //Crear usuario con contraseña cifrada
         Usuario usuario = new Usuario();
