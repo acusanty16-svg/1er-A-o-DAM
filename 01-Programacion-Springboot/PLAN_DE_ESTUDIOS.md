@@ -68,13 +68,13 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - [x] Roles y permisos
 - **Proyecto real #4:** API de usuarios — registro, login y endpoints protegidos por rol ✅
 
-### Fase 6 — Testing profesional (Sesiones 16-18)
-- [ ] Tests unitarios con JUnit 5 + Mockito (servicios)
-- [ ] Tests de integración con `@SpringBootTest`
-- [ ] Test slices (`@WebMvcTest`, `@DataJpaTest`)
-- [ ] Testcontainers: tests contra PostgreSQL real en Docker
-- [ ] Aplicar tests a los proyectos anteriores
-- **Proyecto real #5:** Suite de tests completa de la biblioteca
+### Fase 6 — Testing profesional (Sesiones 16-18) ✅ COMPLETADA
+- [x] Tests unitarios con JUnit 5 + Mockito (servicios)
+- [x] Tests de integración con `@SpringBootTest`
+- [x] Test slices (`@WebMvcTest`, `@DataJpaTest`)
+- [x] Testcontainers: tests contra PostgreSQL real en Docker
+- [x] Aplicar tests a los proyectos anteriores
+- **Proyecto real #5:** Suite de tests completa de la biblioteca — **56 tests verdes** ✅
 
 ### Fase 7 — Producción y API docs (Sesiones 19-20)
 - [ ] Actuator: health checks y métricas
@@ -119,7 +119,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 **Fase 3:** [x] Completada (Sesión 3 — 31/08/2026)
 **Fase 4:** [x] Completada (Sesión 4 — 01/09/2026)
 **Fase 5:** [x] Completada (Sesión 5 — 01/09/2026)
-**Fase 6:** [ ] Pendiente
+**Fase 6:** [x] Completada (Sesión 6 — 17/09/2026)
 **Fase 7:** [ ] Pendiente
 **Fase 8:** [ ] Pendiente
 
@@ -252,6 +252,32 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - Roles por defecto `ROLE_USER` al registrar
 
 **Próxima sesión (Fase 6):** Testing profesional — JUnit 5, Mockito, tests unitarios y de integración
+
+### Sesión 6 — 17/09/2026 · Fase 6 ✅
+**Qué hicimos hoy:**
+- **Teoría:** Aprendimos la pirámide de testing (unit tests, tests de integración, E2E) y los test slices de Spring Boot (`@WebMvcTest`, `@DataJpaTest`, `@SpringBootTest`)
+- **Dependencias de test:** `spring-boot-starter-test`, Testcontainers 2.0.5 (postgresql, junit-jupiter) y el nuevo módulo `spring-boot-restclient` de Boot 4 para `TestRestTemplate`
+- **Unit tests de servicios:** `AutorServiceTest`, `LibroServiceTest`, `PrestamoServiceTest`, `UsuarioServiceTest` con Mockito (`@MockitoBean`) — 22 tests
+- **Tests de repositorios:** `PrestamosRepositoryTest`, `UsuarioRepositorioTest` con `@DataJpaTest` sobre H2 — 12 tests
+- **Tests de controladores:** `AuthControllerTest`, `AutorControllerTest`, `LibroControllerTest` con `@WebMvcTest` + MockMvc — 16 tests
+- **Tests de integración:** `BibliotecaIntegrationTest` con `@SpringBootTest` + Testcontainers levantando **PostgreSQL real en Docker** — flujo completo registro → login → JWT → préstamo → devolución, y verificación 401 sin token — 5 tests
+- **Perfiles de test:** Creemos `application-test.yml` (H2 en memoria) y `application-testcontainers.yml` (PostgreSQL real vía Testcontainers + configuración JWT y límite de préstamos)
+- **Resultado:** Suite completa en verde — **56 tests, 0 fallos** (BUILD SUCCESS)
+
+**Problemas resueltos:**
+- `jwt.secret` indefinido en `application-testcontainers.yml` — añadidos los bloques `jwt` y `biblioteca` al perfil de test
+- `TestRestTemplate` sin bean en Boot 4 — es opt-in: requiere `@AutoConfigureTestRestTemplate`
+- `NoClassDefFoundError: org/springframework/boot/restclient/RestTemplateBuilder` — Boot 4 modularizó los módulos: faltaba la dependencia `spring-boot-restclient`
+- Registro devolvía 200 (no 201) y el login devolvía `LoginResponseDTO` (no `LoginDTO`) — corregidos los asserts de test
+- Test de devolución: URL sin barra final, usaba POST en vez de PUT y faltaba el assert del 204 — normalizado a `PUT /api/prestamos/{id}/devolver`
+
+**Decisiones tomadas:**
+- Testcontainers con PostgreSQL real para los tests de integración en vez de mockear la BD
+- `@MockitoBean` (herencia de `@MockBean`) como estándar para los mocks de Boot 4
+- Perfil `test` (H2) para tests rápidos de slices y perfil `testcontainers` para integración
+- Tests autocontenidos con datos únicos (sin colisiones entre clases)
+
+**Próxima sesión (Fase 7):** Producción y API docs — Actuator, OpenAPI/Swagger y code review final
 
 ---
 
