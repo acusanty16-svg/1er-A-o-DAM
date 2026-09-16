@@ -61,12 +61,12 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - [x] `@ConfigurationProperties` para configuración tipada
 - **Proyecto real #3:** Biblioteca con 2 entornos (local con Docker + producción simulada) ✅
 
-### Fase 5 — Seguridad (Sesiones 13-15)
-- [ ] Spring Security: autenticación y autorización
-- [ ] Hashing de contraseñas con BCrypt
-- [ ] JWT para APIs modernas
-- [ ] Roles y permisos
-- **Proyecto real #4:** API de usuarios — registro, login y endpoints protegidos por rol
+### Fase 5 — Seguridad (Sesiones 13-15) ✅ COMPLETADA
+- [x] Spring Security: autenticación y autorización
+- [x] Hashing de contraseñas con BCrypt
+- [x] JWT para APIs modernas
+- [x] Roles y permisos
+- **Proyecto real #4:** API de usuarios — registro, login y endpoints protegidos por rol ✅
 
 ### Fase 6 — Testing profesional (Sesiones 16-18)
 - [ ] Tests unitarios con JUnit 5 + Mockito (servicios)
@@ -118,7 +118,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 **Fase 2:** [x] Completada (Sesión 2 — 26/08/2026)
 **Fase 3:** [x] Completada (Sesión 3 — 31/08/2026)
 **Fase 4:** [x] Completada (Sesión 4 — 01/09/2026)
-**Fase 5:** [ ] Pendiente
+**Fase 5:** [x] Completada (Sesión 5 — 01/09/2026)
 **Fase 6:** [ ] Pendiente
 **Fase 7:** [ ] Pendiente
 **Fase 8:** [ ] Pendiente
@@ -224,6 +224,34 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - Límite de 5 préstamos configurado en `application-dev.yml`
 
 **Próxima sesión (Fase 5):** Seguridad — Spring Security, JWT, roles y permisos
+
+### Sesión 5 — 01/09/2026 · Fase 5 ✅
+**Qué hicimos hoy:**
+- **Teoría:** Aprendimos sobre Spring Security, autenticación vs autorización, JWT (JSON Web Tokens), hashing de contraseñas con BCrypt, y roles de usuario
+- **Dependencias:** Añadimos `spring-boot-starter-security` y las librerías JWT (`jjwt-api`, `jjwt-impl`, `jjwt-jackson` v0.12.6)
+- **Entidades:** Creamos `Usuario.java` (username, password cifrada, email, role) y `Role.java` (enum `ROLE_USER`, `ROLE_ADMIN`)
+- **Repositorio:** `UsuarioRepository.java` con métodos personalizados (`findByUsername`, `existsByUsername`, `existsByEmail`)
+- **Servicio JWT:** `JwtService.java` para generar, validar y extraer datos de tokens JWT
+- **Servicio de usuarios:** `UsuarioService.java` con registro de usuarios y cifrado BCrypt
+- **Filtro JWT:** `JwtAuthenticationFilter.java` — se ejecuta en cada petición para validar el token
+- **UserDetailsService:** `UserDetailServiceImpl.java` — carga usuarios para Spring Security
+- **Configuración:** `SecurityConfig.java` — endpoints públicos (`/api/auth/**`, `/api/libros/**`, `/api/autores/**`) vs protegidos, estado sin sesiones, CORS, CSRF deshabilitado
+- **Controlador:** `AuthController.java` con endpoints `POST /api/auth/register` y `POST /api/auth/login`
+- **DTOs:** `LoginDTO.java`, `LoginResponseDTO.java`, `UsuarioCreateDTO.java`, `UsuarioDTO.java`
+- **Excepciones:** `CredencialesInvalidasException.java`, `UsuarioDuplicadoException.java`
+- **Datos de prueba:** Usuarios `admin` (ROLE_ADMIN) y `usuario` (ROLE_USER) en `data.sql`
+
+**Problemas resueltos:**
+- Configuración JWT anidada incorrectamente — movida a la raíz del YAML
+- Filtro JWT no se registraba correctamente — verificamos el orden de filtros
+
+**Decisiones tomadas:**
+- JWT con expiración de 24 horas
+- `STATELESS` — sin sesiones en servidor
+- BCrypt para hashing de contraseñas
+- Roles por defecto `ROLE_USER` al registrar
+
+**Próxima sesión (Fase 6):** Testing profesional — JUnit 5, Mockito, tests unitarios y de integración
 
 ---
 

@@ -1,5 +1,12 @@
 # 🚀 Curso de Spring Boot — Desde Cero hasta Profesional
 
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-0.12.6-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Testing](https://img.shields.io/badge/Testing-JUnit5_%2B_Mockito_%2B_Testcontainers-25A162?style=for-the-badge)
+
 > **Proyecto de aprendizaje** donde construimos APIs REST profesionales paso a paso, siguiendo las mejores prácticas de la industria.
 
 ## 📋 Descripción General
@@ -19,6 +26,8 @@ Este repositorio contiene el material completo de un curso de **Spring Boot** di
 | **Docker** | — | Contenedores para PostgreSQL |
 | **Lombok** | — | Reducción de código boilerplate |
 | **JWT (jjwt)** | 0.12.6 | Tokens de autenticación (Fase 5) |
+| **JUnit 5 + Mockito** | — | Tests unitarios de servicios y controladores (Fase 6) |
+| **Testcontainers** | 2.0.5 | PostgreSQL real para tests de integración (Fase 6) |
 | **Bean Validation** | — | Validación de datos |
 | **Maven** | Wrapper | Gestión de dependencias |
 | **IntelliJ IDEA** | 2025.2.3 Community | IDE de desarrollo |
@@ -37,7 +46,7 @@ El curso está dividido en **8 fases** progresivas:
 | **Fase 3** | Capa de Datos: JPA + PostgreSQL | ✅ Completada |
 | **Fase 4** | Configuración profesional | ✅ Completada |
 | **Fase 5** | Seguridad (Spring Security + JWT) | ✅ Completada |
-| **Fase 6** | Testing profesional | ⏳ Pendiente |
+| **Fase 6** | Testing profesional | ✅ Completada |
 | **Fase 7** | Producción y API docs | ⏳ Pendiente |
 | **Fase 8** | Proyecto Integrador Final | ⏳ Pendiente |
 
@@ -51,7 +60,10 @@ El curso está dividido en **8 fases** progresivas:
 ├── PLAN_DE_ESTUDIOS.md                    ← Plan detallado del curso
 ├── Sesiones/                              ← Contenido teórico por fase
 │   ├── Fase1-Fundamentos-Spring-Core.md
-│   └── Fase2-Capa-Web-REST-API.md
+│   ├── Fase2-Capa-Web-REST-API.md
+│   ├── Fase3-Capa-Datos-JPA-PostgreSQL.md
+│   ├── Fase4-Configuracion-Profesional.md
+│   └── Fase5-Seguridad-Spring-Security-JWT.md
 │
 ├── ejercicio1-hola-mundo/                 ← Proyecto 1: API de Tienda
 │   └── ejercicio1-hola-mundo/
@@ -109,6 +121,11 @@ El curso está dividido en **8 fases** progresivas:
             ├── AutorController.java
             ├── LibroController.java
             └── PrestamoController.java
+    └── test/java/Biblioteca/ejercicio2/  ← Tests de la Fase 6
+        ├── service/                       ← Unit tests con Mockito
+        ├── repository/                    ← @DataJpaTest con H2
+        ├── controller/                    ← @WebMvcTest + MockMvc
+        └── integration/                   ← Testcontainers + PostgreSQL real
 ```
 
 ---
@@ -254,6 +271,14 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 - **AuthenticationManager:** Gestión de autenticación
 - **DTOs de seguridad:** `LoginDTO`, `UsuarioCreateDTO`, `UsuarioDTO`
 
+### Fase 6 — Testing Profesional
+- **Test slices:** `@WebMvcTest`, `@DataJpaTest`, `@SpringBootTest` por capa
+- **Unit tests de servicios:** JUnit 5 + Mockito (`@MockitoBean`)
+- **Tests de controladores:** MockMvc + validación de código y cuerpo JSON
+- **Tests de integración:** `TestRestTemplate` + Testcontainers con PostgreSQL real
+- **Perfiles de test:** aislados del entorno de desarrollo (`dev`, `test`, `testcontainers`)
+- **Particularidad Boot 4.1.1:** `TestRestTemplate` es opt-in (`@AutoConfigureTestRestTemplate`) y exige el módulo `spring-boot-restclient`
+
 ---
 
 ## 🎓 Metodología de Aprendizaje
@@ -275,7 +300,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 | 31/08/2026 | Fase 3 — Capa de Datos: JPA + PostgreSQL | ~60 min | ✅ |
 | 01/09/2026 | Fase 4 — Configuración profesional | ~30 min | ✅ |
 | 01/09/2026 | Fase 5 — Seguridad | ~60 min | ✅ |
-| — | Fase 6 — Testing | — | ⏳ |
+| 17/09/2026 | Fase 6 — Testing profesional | ~60 min | ✅ |
 | — | Fase 7 — Producción | — | ⏳ |
 | — | Fase 8 — Proyecto Final | — | ⏳ |
 
