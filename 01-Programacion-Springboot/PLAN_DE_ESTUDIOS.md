@@ -76,10 +76,10 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - [x] Aplicar tests a los proyectos anteriores
 - **Proyecto real #5:** Suite de tests completa de la biblioteca — **56 tests verdes** ✅
 
-### Fase 7 — Producción y API docs (Sesiones 19-20)
-- [ ] Actuator: health checks y métricas
-- [ ] OpenAPI/Swagger para documentar la API
-- [ ] Buenas prácticas finales y code review de lo aprendido
+### Fase 7 — Producción y API docs (Sesiones 19-20) ✅ COMPLETADA
+- [x] Actuator: health checks y métricas
+- [x] OpenAPI/Swagger para documentar la API
+- [x] Buenas prácticas finales y code review de lo aprendido
 
 ### Fase 8 — Proyecto Integrador Final (Sesiones 21-25)
 - [ ] **Sistema de e-commerce completo:** productos, carrito, pedidos, usuarios con roles
@@ -120,7 +120,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 **Fase 4:** [x] Completada (Sesión 4 — 01/09/2026)
 **Fase 5:** [x] Completada (Sesión 5 — 01/09/2026)
 **Fase 6:** [x] Completada (Sesión 6 — 17/09/2026)
-**Fase 7:** [ ] Pendiente
+**Fase 7:** [x] Completada (Sesión 7 — 17/09/2026)
 **Fase 8:** [ ] Pendiente
 
 ---
@@ -277,7 +277,29 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - Perfil `test` (H2) para tests rápidos de slices y perfil `testcontainers` para integración
 - Tests autocontenidos con datos únicos (sin colisiones entre clases)
 
-**Próxima sesión (Fase 7):** Producción y API docs — Actuator, OpenAPI/Swagger y code review final
+**Próxima sesión (Fase 8):** Proyecto Integrador Final — sistema de e-commerce completo (productos, carrito, pedidos, usuarios con roles)
+
+### Sesión 7 — 17/09/2026 · Fase 7 ✅
+**Qué hicimos hoy:**
+- **Actuator:** añadimos `spring-boot-starter-actuator` y expusimos `/actuator/health` y `/actuator/info` (públicos en todos los perfiles)
+- **OpenAPI/Swagger:** dependencia `springdoc-openapi-starter-webmvc-ui` 3.1.1 (v3 es la compatible con Boot 4) y `OpenApiConfig` con `Info` + esquema de seguridad `bearerAuth`
+- **Documentación interactiva:** Swagger UI en dev con botón **Authorize**; los GET sin candado y los POST/PUT protegidos con candado
+- **Security por método:** `@PreAuthorize("hasRole('ADMIN')")` en POST de autores y libros (`@EnableMethodSecurity`); préstamos para cualquier usuario autenticado
+- **Correcciones de review:** matchers GET con `/**`, un solo `anyRequest().authenticated()` al final, y 4 errores de tests de integración (id real del autor, headers y body correctos)
+- **Perfil `prod`:** Swagger desactivado (`springdoc.api-docs/swagger-ui.enabled: false`), JWT por variables de entorno (`JWT_SECRET`), `open-in-view: false`, `ddl-auto: validate`, puerto 8080
+- **Script de arranque:** `run-prod.ps1` en `ejercicio2` que define `JWT_SECRET`, `DB_PORT` y lanza `spring-boot:run` con el perfil prod
+- **Resultado:** Suite en verde — **57 tests, 0 fallos** (nuevo `crearAutor_sinRolAdmin_deberiaRetornar403`)
+
+**Problemas resueltos:**
+- `SPEED: jwt.secret` indefinido en prod — `JwtService` lee `${jwt.secret}` y el perfil prod no lo definía; solución: variables de entorno `JWT_SECRET` y `JWT_EXPIRATION` (las variables de PowerShell se pierden al cerrar la terminal)
+- matcher duplicado `/api/libros/**` y `/api/prestamos` sin `/**` que no cubría `/{id}`, y `anyRequest()` en medio de la cadena que se comía las reglas posteriores
+- Dependencia duplicada `spring-boot-starter-web` legacy frente a `spring-boot-starter-webmvc`
+
+**Decisiones tomadas:**
+- Swagger solo en dev; en prod se desactiva para no exponer la documentación
+- 401 = no autenticado vs 403 = autenticado sin rol (verificado en la prueba del 403)
+- Secreto JWT por variables de entorno en prod (no hardcodeado en el repo)
+- Actuator en el mismo puerto que la API (health e info, sin métricas por ahora)
 
 ---
 

@@ -28,6 +28,8 @@ Este repositorio contiene el material completo de un curso de **Spring Boot** di
 | **JWT (jjwt)** | 0.12.6 | Tokens de autenticación (Fase 5) |
 | **JUnit 5 + Mockito** | — | Tests unitarios de servicios y controladores (Fase 6) |
 | **Testcontainers** | 2.0.5 | PostgreSQL real para tests de integración (Fase 6) |
+| **Actuator** | — | Métricas y health checks de producción (Fase 7) |
+| **springdoc OpenAPI** | 3.1.1 | Documentación Swagger UI de la API (Fase 7) |
 | **Bean Validation** | — | Validación de datos |
 | **Maven** | Wrapper | Gestión de dependencias |
 | **IntelliJ IDEA** | 2025.2.3 Community | IDE de desarrollo |
@@ -47,7 +49,7 @@ El curso está dividido en **8 fases** progresivas:
 | **Fase 4** | Configuración profesional | ✅ Completada |
 | **Fase 5** | Seguridad (Spring Security + JWT) | ✅ Completada |
 | **Fase 6** | Testing profesional | ✅ Completada |
-| **Fase 7** | Producción y API docs | ⏳ Pendiente |
+| **Fase 7** | Producción y API docs | ✅ Completada |
 | **Fase 8** | Proyecto Integrador Final | ⏳ Pendiente |
 
 ---
@@ -279,6 +281,15 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 - **Perfiles de test:** aislados del entorno de desarrollo (`dev`, `test`, `testcontainers`)
 - **Particularidad Boot 4.1.1:** `TestRestTemplate` es opt-in (`@AutoConfigureTestRestTemplate`) y exige el módulo `spring-boot-restclient`
 
+### Fase 7 — Producción y API docs
+- **Actuator:** health checks (`/actuator/health`, `/actuator/info`) públicos y expuestos en todos los perfiles
+- **OpenAPI + Swagger UI** (`springdoc-openapi-starter-webmvc-ui` 3.1.1): documentación interactiva con esquema de seguridad `bearerAuth` y candados `@SecurityRequirement` en las rutas protegidas
+- **Seguridad por rol a nivel de método:** `@PreAuthorize("hasRole('ADMIN')")` en los POST de autores y libros; préstamos para cualquier usuario autenticado
+- **`@EnableMethodSecurity`:** activa la validación de `@PreAuthorize` sobre los controladores
+- **Perfil `prod`:** Swagger desactivado, JWT por variables de entorno (`JWT_SECRET`), `open-in-view: false`, `ddl-auto: validate`
+- **Script de arranque:** `ejercicio2/run-prod.ps1` para levantar el perfil de producción con doble clic
+- **Código: 57 tests verdes**, incluyendo `crearAutor_sinRolAdmin_deberiaRetornar403`
+
 ---
 
 ## 🎓 Metodología de Aprendizaje
@@ -301,7 +312,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 | 01/09/2026 | Fase 4 — Configuración profesional | ~30 min | ✅ |
 | 01/09/2026 | Fase 5 — Seguridad | ~60 min | ✅ |
 | 17/09/2026 | Fase 6 — Testing profesional | ~60 min | ✅ |
-| — | Fase 7 — Producción | — | ⏳ |
+| 17/09/2026 | Fase 7 — Producción y API docs | ~90 min | ✅ |
 | — | Fase 8 — Proyecto Final | — | ⏳ |
 
 ---
