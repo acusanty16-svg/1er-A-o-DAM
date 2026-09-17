@@ -4,3 +4,8 @@ spring:
     name: ejercicio2
   profiles:
     active: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

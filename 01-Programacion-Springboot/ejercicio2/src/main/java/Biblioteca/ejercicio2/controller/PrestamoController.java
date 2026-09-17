@@ -3,6 +3,7 @@ package Biblioteca.ejercicio2.controller;
 import Biblioteca.ejercicio2.DTO.PrestamoCreateDTO;
 import Biblioteca.ejercicio2.DTO.PrestamosDTO;
 import Biblioteca.ejercicio2.service.PrestamoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,12 @@ public class PrestamoController {
         return ResponseEntity.ok(prestamoService.findById(id));
     }
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<PrestamosDTO> create(@Valid @RequestBody PrestamoCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(prestamoService.create(dto));
     }
     @PutMapping("/{id}/devolver")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Void> devolverLibro(@PathVariable UUID id){
         prestamoService.devolverLibro(id);
         return ResponseEntity.noContent().build();

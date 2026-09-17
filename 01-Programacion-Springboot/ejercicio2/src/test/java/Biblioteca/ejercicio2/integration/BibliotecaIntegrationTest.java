@@ -34,18 +34,35 @@ public class BibliotecaIntegrationTest {
 
     @Test
     void flujo_crearAutorYLibro(){
+        //1. Trabajador autenticado
+        restTemplate.postForEntity("/api/auth/register", new UsuarioCreateDTO("julio","pass123","julio@email.com")
+        ,UsuarioDTO.class);
+        jdbcTemplate.update("UPDATE usuarios SET role = 'ROLE_ADMIN' WHERE username =?","julio");
+        ResponseEntity<LoginResponseDTO> loginRes =
+                restTemplate.postForEntity("/api/auth/login",new LoginDTO("julio","pass123")
+                , LoginResponseDTO.class);
+        String token = loginRes.getBody().getToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        //2. Post
+        HttpEntity<AutorCreateDTO> autorEntity=
+                new HttpEntity<>(new AutorCreateDTO("Julio Verne"), headers);
         ResponseEntity<AutorDTO> autorRes =
-                restTemplate.postForEntity("/api/autores", new AutorCreateDTO("Julio Verne"),
-                        AutorDTO.class);
+                restTemplate.exchange("/api/autores",HttpMethod.POST,autorEntity, AutorDTO.class);
         assertEquals(HttpStatus.CREATED, autorRes.getStatusCode());
         UUID autorId = autorRes.getBody().getId();
 
+        //3. Libros con Token
+        HttpEntity<LibroCreateDTO> libroEntity=
+                new HttpEntity<>(new LibroCreateDTO("Veinte mil leguas",29.99,autorId),headers);
         ResponseEntity<LibroDTO> libroRes =
-                restTemplate.postForEntity("/api/libros", new LibroCreateDTO("Veinte mil leguas"
-                ,29.99,autorId), LibroDTO.class);
+                restTemplate.exchange("/api/libros",HttpMethod.POST, libroEntity, LibroDTO.class);
         assertEquals(HttpStatus.CREATED, libroRes.getStatusCode());
         assertEquals("Veinte mil leguas", libroRes.getBody().getTitulo());
         assertEquals("Julio Verne", libroRes.getBody().getAutorNombre());
+
     }
 
     @Test
@@ -74,6 +91,7 @@ public class BibliotecaIntegrationTest {
         assertEquals(HttpStatus.OK, usuarioRes.getStatusCode());
         assertEquals("ana", usuarioRes.getBody().getUsername());
 
+        jdbcTemplate.update("UPDATE usuarios SET role = 'ROLE_ADMIN' WHERE username = ?", "ana");
         ResponseEntity<LoginResponseDTO> loginRes =
                 restTemplate.postForEntity("/api/auth/login", new LoginDTO("ana","pass123")
                         , LoginResponseDTO.class);
@@ -82,26 +100,35 @@ public class BibliotecaIntegrationTest {
         assertNotNull(loginRes.getBody().getToken());
         assertFalse(loginRes.getBody().getToken().isBlank());
 
+
+        String token = loginRes.getBody().getToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+
+        HttpEntity<AutorCreateDTO> autorEntity =
+                new HttpEntity<>(new AutorCreateDTO("Isaac Asimov"), headers);
         ResponseEntity<AutorDTO> autorRes =
-                restTemplate.postForEntity("/api/autores", new AutorCreateDTO("Isaac Asimov"),
-                        AutorDTO.class);
-        assertEquals(HttpStatus.CREATED, autorRes.getStatusCode());
+                restTemplate.exchange("/api/autores",HttpMethod.POST,autorEntity, AutorDTO.class);
         UUID autorId = autorRes.getBody().getId();
 
+        HttpEntity<LibroCreateDTO> libroEntity=
+                new HttpEntity<>(new LibroCreateDTO("Fundacion",29.99,autorId),headers);
         ResponseEntity<LibroDTO> libroRes =
-                restTemplate.postForEntity("/api/libros", new LibroCreateDTO("Fundacion"
-                        ,29.99,autorId), LibroDTO.class);
+                restTemplate.exchange("/api/libros",HttpMethod.POST,libroEntity,LibroDTO.class);
+
+
         assertEquals(HttpStatus.CREATED, libroRes.getStatusCode());
         assertEquals("Fundacion", libroRes.getBody().getTitulo());
         assertEquals("Isaac Asimov", libroRes.getBody().getAutorNombre());
 
-        HttpHeaders headers = new HttpHeaders();
+        headers = new HttpHeaders();
         headers.setBearerAuth(loginRes.getBody().getToken());
         HttpEntity<PrestamoCreateDTO> entity = new HttpEntity<>(new PrestamoCreateDTO
                 (libroRes.getBody().getId(), "ana"), headers);
-
         ResponseEntity<PrestamosDTO> prestamosRes =
                 restTemplate.exchange("/api/prestamos",HttpMethod.POST,entity,PrestamosDTO.class);
+
         assertEquals(HttpStatus.CREATED, prestamosRes.getStatusCode());
         assertEquals("Fundacion", prestamosRes.getBody().getLibroTitulo());
 
@@ -112,6 +139,24 @@ public class BibliotecaIntegrationTest {
                 assertEquals(HttpStatus.NO_CONTENT, devoluciones.getStatusCode());
 
     }
+
+    @Test
+    void crearAutor_sinRolAdmin_deberiaRetornar403(){
+        restTemplate.postForEntity("/api/auth/register"
+                , new UsuarioCreateDTO("cliente","pass123","cliente@email.com"),UsuarioDTO.class);
+        ResponseEntity<LoginResponseDTO> loginRes =
+                restTemplate.postForEntity("/api/auth/login"
+                ,new LoginDTO("cliente","pass123"), LoginResponseDTO.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(loginRes.getBody().getToken());
+
+        HttpEntity<AutorCreateDTO> autorEntity=
+                new HttpEntity<>(new AutorCreateDTO("Autor prohibido"),headers);
+        ResponseEntity<String> autorRes =
+                restTemplate.exchange("/api/autores",HttpMethod.POST,autorEntity,String.class);
+        assertEquals(HttpStatus.FORBIDDEN, autorRes.getStatusCode());
+    }
+
 
     @Test
     void prestamo_sinToken_deberiaRetornar401(){

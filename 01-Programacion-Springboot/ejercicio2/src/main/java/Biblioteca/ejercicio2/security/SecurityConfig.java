@@ -2,6 +2,7 @@ package Biblioteca.ejercicio2.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -46,8 +47,16 @@ public class SecurityConfig {
                 .httpBasic(htt -> htt.disable())
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/libros/**").permitAll()
-                        .requestMatchers("/api/autores/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/autores/**"
+                                , "/api/libros/**","/api/prestamos/**").permitAll()
+                        //Actuator: health check e info accesibles sin autenticacion
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/actuator/info").permitAll()
+                        //OpenApi / Swagger: documentacion accesible sin autenticacion
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/v3/api-docs.yaml").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session->session

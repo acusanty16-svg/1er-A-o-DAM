@@ -3,9 +3,11 @@ package Biblioteca.ejercicio2.controller;
 import Biblioteca.ejercicio2.DTO.AutorCreateDTO;
 import Biblioteca.ejercicio2.DTO.AutorDTO;
 import Biblioteca.ejercicio2.service.AutorService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +35,8 @@ public class AutorController {
         return ResponseEntity.ok(autorService.findById(id));
     }
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<AutorDTO> create(@Valid @RequestBody AutorCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(autorService.create(dto));
     }

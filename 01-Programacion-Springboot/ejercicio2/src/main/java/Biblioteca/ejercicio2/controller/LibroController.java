@@ -3,9 +3,11 @@ package Biblioteca.ejercicio2.controller;
 import Biblioteca.ejercicio2.DTO.LibroCreateDTO;
 import Biblioteca.ejercicio2.DTO.LibroDTO;
 import Biblioteca.ejercicio2.service.LibroService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,8 @@ public class LibroController {
         return ResponseEntity.ok(libroService.findById(id));
     }
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<LibroDTO> create(@Valid @RequestBody LibroCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(libroService.create(dto));
     }

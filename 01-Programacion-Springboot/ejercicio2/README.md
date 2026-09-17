@@ -5,13 +5,13 @@
 ![JWT](https://img.shields.io/badge/JWT-0.12.6-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Estado](https://img.shields.io/badge/Estado-Completado_6%2F8_fases-25A162?style=for-the-badge)
+![Estado](https://img.shields.io/badge/Estado-Completado_7%2F8_fases-25A162?style=for-the-badge)
 
-> Proyecto de gestión de biblioteca desarrollado con Spring Boot, JPA, PostgreSQL, Spring Security con JWT y **testing profesional completo**.
+> Proyecto de gestión de biblioteca desarrollado con Spring Boot, JPA, PostgreSQL, Spring Security con JWT, testing profesional completo, Actuator y documentación OpenAPI/Swagger.
 
 ## ✅ Estado del proyecto
 
-Completado hasta la **Fase 6 (Testing profesional)**
+Completado hasta la **Fase 7 (Producción y API docs)**
 
 | Fase | Qué aporta | Estado |
 |------|-----------|--------|
@@ -19,6 +19,7 @@ Completado hasta la **Fase 6 (Testing profesional)**
 | **Fase 4** | Configuración profesional (profiles, `@ConfigurationProperties`) | ✅ |
 | **Fase 5** | Seguridad: Spring Security + JWT + BCrypt + roles | ✅ |
 | **Fase 6** | Testing: unit tests, controllers y tests de integración | ✅ |
+| **Fase 7** | Producción: Actuator, OpenAPI/Swagger, `@PreAuthorize` y perfil prod | ✅ |
 
 ## 🎯 Objetivo del proyecto
 
@@ -143,9 +144,55 @@ O desde IntelliJ: ejecutar `Ejercicio2Application.java`
 
 La aplicación arranca en: `http://localhost:8081`
 
-## 🧪 Testing (Fase 6)
+### 4. Ejecutar en modo producción (Fase 7)
 
-Suite completa en verde: **56 tests**, 0 fallos.
+```powershell
+# Script de arranque: define JWT_SECRET y DB_PORT y lanza el perfil prod
+.\run-prod.ps1
+```
+
+La aplicación arranca en: `http://localhost:8080` con Swagger **desactivado**. Para verificar que está sana: `http://localhost:8080/actuator/health` → `{"status":"UP"}`.
+
+## 🛠️ Producción y API docs (Fase 7)
+
+### Actuator (health checks)
+
+- `/actuator/health` → `{"groups":["liveness","readiness"],"status":"UP"}` (público)
+- `/actuator/info` → información de la aplicación (público)
+- Exposición configurada en `application.yml`: `health,info`
+
+### Swagger UI (solo en desarrollo)
+
+- **Dev (`localhost:8081`):** `http://localhost:8081/swagger-ui.html` — documentación interactiva de la API con botón **Authorize** para JWT
+- **Prod (8080):** Swagger **desactivado** (`springdoc.api-docs.enabled: false`) — no se expone la documentación en producción
+- Esquema de seguridad `bearerAuth`: los endpoints protegidos muestran un candado y permiten pegar el token JWT
+- Las rutas con `@SecurityRequirement` (POST/PUT) quedan marcadas con candado en la UI
+
+### Seguridad por rol
+
+| Recurso | Acceso |
+|---------|--------|
+| Todos los `GET` | Público |
+| `POST` autores y libros | Solo `ROLE_ADMIN` (`@PreAuthorize`) |
+| `POST`/`PUT` préstamos | Usuario autenticado |
+
+- **401** = no autenticado; **403** = autenticado sin rol (JSON personalizado en ambos casos)
+- `@EnableMethodSecurity` activa la evaluación de `@PreAuthorize` en los controladores
+
+### Perfil de producción (`application-prod.yml`)
+
+| Ajuste | Valor |
+|--------|-------|
+| Puerto | 8080 |
+| Swagger | Desactivado |
+| `JWT secret` | `JWT_SECRET` (variable de entorno, obligatoria) |
+| `open-in-view` | `false` |
+| `ddl-auto` | `validate` |
+| URL BD | `DB_HOST/DB_PORT/DB_NAME` (env vars con defaults) |
+
+## 🧪 Testing (Fase 6 + Fase 7)
+
+Suite completa en verde: **57 tests**, 0 fallos.
 
 ### Qué se testea
 
@@ -154,12 +201,17 @@ Suite completa en verde: **56 tests**, 0 fallos.
 | **Servicios** | Lógica de negocio y casos borde (22 tests) | JUnit 5 + Mockito (`@MockitoBean`) |
 | **Repositorios** | Consultas contra BD (12 tests) | `@DataJpaTest` con H2 |
 | **Controladores** | Estado HTTP y cuerpo JSON (16 tests) | `@WebMvcTest` + MockMvc |
-| **Integración** | Flujo completo end-to-end (5 tests) | `@SpringBootTest` + Testcontainers |
+| **Integración** | Flujo completo end-to-end (6 tests) | `@SpringBootTest` + Testcontainers |
 | **Contexto** | Arranque de la app (1 test) | `@SpringBootTest` |
 
 ### Lo más destacado: Testcontainers
 
 Los tests de integración **no usan una base de datos simulada**: Testcontainers levanta un **PostgreSQL real** en un contenedor Docker desechable. Así se verifican los flujos completos (registro → login → JWT → préstamo → devolución) contra el motor de base de datos de producción.
+
+### Seguridad en los tests (nuevo en la Fase 7)
+
+- Los tests de integración ascienden a `ROLE_ADMIN` (vía `jdbcTemplate`) **antes** del login para que el token incluya el rol.
+- Nuevo test `crearAutor_sinRolAdmin_deberiaRetornar403`: un usuario normal recibe **403**, no **201**.
 
 ### Cómo ejecutar los tests
 
@@ -200,14 +252,14 @@ Los tests de integración **no usan una base de datos simulada**: Testcontainers
 |--------|-----|-------------|--------|
 | `GET` | `/api/libros` | Listar todos los libros | Público |
 | `GET` | `/api/libros/{id}` | Obtener un libro por ID | Público |
-| `POST` | `/api/libros` | Crear un libro nuevo | Público |
+| `POST` | `/api/libros` | Crear un libro nuevo | Admin |
 
 ### Préstamos
 
 | Método | URL | Descripción | Acceso |
 |--------|-----|-------------|--------|
-| `GET` | `/api/prestamos` | Listar todos los préstamos | Autenticado |
-| `GET` | `/api/prestamos/{id}` | Obtener un préstamo por ID | Autenticado |
+| `GET` | `/api/prestamos` | Listar todos los préstamos | Público |
+| `GET` | `/api/prestamos/{id}` | Obtener un préstamo por ID | Público |
 | `POST` | `/api/prestamos` | Crear un préstamo (prestar libro) | Autenticado |
 | `PUT` | `/api/prestamos/{id}/devolver` | Devolver un libro prestado | Autenticado |
 
@@ -276,7 +328,14 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 - [x] Tests de repositorios con `@DataJpaTest`
 - [x] Tests de integración con Testcontainers y PostgreSQL real
 - [x] `TestRestTemplate` opt-in en Spring Boot 4 (`@AutoConfigureTestRestTemplate`)
+- [x] Actuator: `health` e `info` checks de producción
+- [x] OpenAPI 3 + Swagger UI con springdoc (incompatible con `springfox`)
+- [x] `@SecurityRequirement` y esquema `bearerAuth` para documentar la seguridad
+- [x] `@EnableMethodSecurity` + `@PreAuthorize("hasRole('ADMIN')")` para proteger por rol
+- [x] Diferenciación 401 (no autenticado) vs 403 (sin permisos)
+- [x] Perfil `prod`: Swagger apagado, JWT por env vars, `open-in-view: false`
+- [x] Script de arranque `run-prod.ps1` para el perfil de producción
 
 ---
 
-*Proyecto del curso de Spring Boot — Fases 3 a 6 completadas*
+*Proyecto del curso de Spring Boot — Fases 3 a 7 completadas*
