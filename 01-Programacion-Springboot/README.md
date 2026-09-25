@@ -135,7 +135,8 @@ El curso está dividido en **8 fases** progresivas:
     └── src/main/java/com/example/E_commerce/ejercicio3/
         ├── model/                         ← Usuario, Producto, Carrito, CarritoItem, Pedido, PedidoItem
         ├── repository/                    ← 5 repositorios JPA
-        └── DTO/                           ← 12 DTOs de entrada y salida
+        ├── DTO/                           ← 12 DTOs de entrada y salida
+        └── exception/                     ← Excepciones custom + ErrorResponse + GlobalExceptionHandler
 ```
 
 ---

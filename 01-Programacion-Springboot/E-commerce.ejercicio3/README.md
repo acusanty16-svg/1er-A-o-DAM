@@ -18,6 +18,7 @@
 | **Modelo de dominio** | 6 entidades: Usuario, Producto, Carrito, CarritoItem, Pedido, PedidoItem + enums Role y EstadoPedido | ✅ |
 | **Repositorios** | 5 repos JPA con consultas derivadas (findByUsername, findByActivoTrue, findByCarritoAndProducto, etc.) | ✅ |
 | **DTOs** | 12 DTOs de entrada/salida con Bean Validation (Producto, Carrito, Pedido, Usuario, Auth) | ✅ |
+| **Excepciones** | 7 excepciones custom + `ErrorResponse` + `GlobalExceptionHandler` con respuestas JSON uniformes | ✅ |
 | **Servicios** | Lógica de negocio: stock transaccional, snapshot de precio, vaciado del carrito | 🔄 En curso |
 | **Controladores** | REST endpoints con validación y manejo de errores | 🔜 |
 | **Seguridad** | JWT + roles ADMIN/USER + @PreAuthorize | 🔜 |
@@ -64,7 +65,7 @@ Integrar todo lo aprendido en el curso en un e-commerce real:
 
 ```
 E-commerce.ejercicio3/
-├── pom.xml                          # Dependencias Maven
+├── pom.xml                          # Dependencias Maven (Lombok como annotation processor)
 ├── src/
 │   ├── main/java/com/example/E_commerce/ejercicio3/
 │   │   ├── Application.java
@@ -83,6 +84,12 @@ E-commerce.ejercicio3/
 │   │   │   ├── CarritoRepository.java
 │   │   │   ├── CarritoItemRepository.java
 │   │   │   └── PedidoRepository.java
+│   │   ├── exception/
+│   │   │   ├── ProductoNotFoundException.java, UsuarioNotFoundException.java
+│   │   │   ├── CarritoItemNotFoundException.java, PedidoNotFoundException.java
+│   │   │   ├── StockInsuficienteException.java, CarritoVacioException.java
+│   │   │   ├── ErrorResponse.java        # Cuerpo uniforme de respuesta de error
+│   │   │   └── GlobalExceptionHandler.java
 │   │   └── DTO/
 │   │       ├── LoginDTO.java, LoginResponseDTO.java, UsuarioCreateDTO.java
 │   │       ├── ProductoCreateDTO.java, ProductoDTO.java

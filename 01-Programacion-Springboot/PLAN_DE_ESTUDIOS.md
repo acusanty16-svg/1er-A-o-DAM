@@ -311,16 +311,22 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - **Repositorios:** 5 interfaces JPA con consultas derivadas (`findByUsername`, `existsByEmail`, `findByActivoTrue`, `findByCarritoAndProducto`, `findByUsuarioOrderByFechaDesc`); se corrigieron métodos con el nombre derivado mal escrito (`findAllByOrderNombreAsc` → `findAllByOrderByNombreAsc`) y un `findByUsername` sobre `Carrito` que no existe en la entidad
 - **DTOs:** 12 clases en `DTO/`; de entrada con validación (`@NotBlank`, `@Size`, `@NotNull`, `@Positive`, `@Min`, `@Email`) y de salida aplanadas (sin objetos JPA); `CarritoDTO.total` y `subtotal` se calculan en el service (no se guardan)
 - **Subida:** commit `feat(ecommerce)` con el dominio + repositorios y otro con los DTOs; README del proyecto actualizado con su estado
+- **Excepciones (8 clases en `exception/`):** `ProductoNotFoundException`, `UsuarioNotFoundException`, `CarritoItemNotFoundException`, `PedidoNotFoundException`, `StockInsuficienteException`, `CarritoVacioException`, `ErrorResponse` (cuerpo uniforme: timestamp, status, error, message, path) y `GlobalExceptionHandler` con `@RestControllerAdvice` (400 para validación/stock/carrito vacío y genérico; 404 para los NotFound) — el código >400 semántico y uniforme para toda la API
+- **Error didáctico resuelto:** el `GlobalExceptionHandler` no compilaba porque Boot 4.1.1 (maven-compiler-plugin 3.15) no descubre Lombok del classpath por defecto → se añadió el bloque `annotationProcessorPaths` en `maven-compiler-plugin` (igual que en `ejercicio2`); este fue el primer sitio del proyecto que invocaba un constructor generado por Lombok, así que el error no había aparecido antes
 **Problemas resueltos:**
 - Métodos derivados que compilan pero fallan al crear el contexto (Spring no encuentra la propiedad): se revisaron contra los campos reales de cada entidad
 - Campos de DTO que no existían en la entidad (`ProductoDTO.estadoPedido` → `activo`, `UsuarioDTO.nombre` → `email`, `UsuarioCreateDTO.nombre` → `username`)
 - Staging sucio en git: versión corregida sin stagear frente a la antigua staged (se re-stageó todo antes del commit)
+- `.mvnw clean` fallaba al no poder borrar `target/` por el atributo `ReparsePoint` (marca de OneDrive) → se elimina `target` manualmente antes de los clean
+- En `GlobalExceptionHandler`, el campo `error` era el nombre de la excepción (`"Stock Insuficiente"`) y ahora es siempre el texto del status (`"Bad Request"`, `"Not Found"`), como en `ejercicio2`
 **Decisiones tomadas:**
 - Carrito persistido en BD y dueño de la relación 1:1 (no se mapea la lista en `Usuario`)
 - Stock finito y descontado en la compra con `@Transactional`
 - Snapshot de nombre y precio solo en `PedidoItem`; el carrito lee siempre el precio en vivo del producto
+- `DELETE /productos/{id}` será borrado lógico (campo `activo=false`) y no físico
+- El carrito y los pedidos resolverán el usuario logueado desde el contexto de autenticación (`@AuthenticationPrincipal`), no por el body; el `AuthController` se deja para la sesión de Seguridad
 
-**Próxima sesión (Fase 8):** excepciones personalizadas, `ErrorResponse` y `GlobalExceptionHandler`, y servicios con la lógica de negocio (stock, snapshot y vaciado del carrito)
+**Próxima sesión (Fase 8):** servicios con la lógica de negocio — `ProductoService`, `CarritoService` (subtotal/total y vaciado) y `PedidoService` (`@Transactional`, validación de stock y snapshot en la compra)
 
 ---
 
