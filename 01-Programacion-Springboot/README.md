@@ -50,7 +50,7 @@ El curso está dividido en **8 fases** progresivas:
 | **Fase 5** | Seguridad (Spring Security + JWT) | ✅ Completada |
 | **Fase 6** | Testing profesional | ✅ Completada |
 | **Fase 7** | Producción y API docs | ✅ Completada |
-| **Fase 8** | Proyecto Integrador Final | ⏳ Pendiente |
+| **Fase 8** | Proyecto Integrador Final | 🔄 En curso |
 
 ---
 
@@ -128,6 +128,14 @@ El curso está dividido en **8 fases** progresivas:
         ├── repository/                    ← @DataJpaTest con H2
         ├── controller/                    ← @WebMvcTest + MockMvc
         └── integration/                   ← Testcontainers + PostgreSQL real
+
+└── E-commerce.ejercicio3/                 ← Proyecto 3: E-commerce (Fase 8)
+    ├── pom.xml                            ← Dependencias Maven
+    ├── README.md                          ← Documentación del proyecto
+    └── src/main/java/com/example/E_commerce/ejercicio3/
+        ├── model/                         ← Usuario, Producto, Carrito, CarritoItem, Pedido, PedidoItem
+        ├── repository/                    ← 5 repositorios JPA
+        └── DTO/                           ← 12 DTOs de entrada y salida
 ```
 
 ---
@@ -313,7 +321,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 | 01/09/2026 | Fase 5 — Seguridad | ~60 min | ✅ |
 | 17/09/2026 | Fase 6 — Testing profesional | ~60 min | ✅ |
 | 17/09/2026 | Fase 7 — Producción y API docs | ~90 min | ✅ |
-| — | Fase 8 — Proyecto Final | — | ⏳ |
+| 25/09/2026 | Fase 8 — Proyecto Final (e-commerce) | — | 🔄 |
 
 ---
 

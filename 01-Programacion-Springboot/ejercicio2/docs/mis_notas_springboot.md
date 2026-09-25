@@ -17,7 +17,7 @@
 ## 2. Estado de Progreso del Curso
 
 - **Fases completadas (Fase 0 a Fase 7):** Preparación del entorno, fundamentos de Spring Core (IoC/DI/Beans), Capa Web REST (DTOs, validación, `@ControllerAdvice`), Capa de Datos JPA + PostgreSQL (relaciones `@OneToMany`/`@ManyToOne`), Configuración Profesional (profiles `dev`/`prod`, variables de entorno), Seguridad (Spring Security, BCrypt, JWT, roles), Testing Profesional (JUnit 5, Mockito, Testcontainers, test slices) y Producción + API docs (Actuator, OpenAPI/Swagger, seguridad por método con `@PreAuthorize`) [10-15, 16-18, 19-20].
-- **Fase actual:** **Fase 7 — Producción y API docs** completada (Sesión 7 — 17/09/2026). Siguiente: **Fase 8 — Proyecto Integrador Final**.
+- **Fase actual:** **Fase 8 — Proyecto Integrador Final** en curso (se inicia `E-commerce.ejercicio3`): dominio, repositorios y DTOs construidos (Sesión 8 — 25/09/2026).
 
 ---
 

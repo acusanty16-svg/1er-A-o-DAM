@@ -121,7 +121,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 **Fase 5:** [x] Completada (Sesión 5 — 01/09/2026)
 **Fase 6:** [x] Completada (Sesión 6 — 17/09/2026)
 **Fase 7:** [x] Completada (Sesión 7 — 17/09/2026)
-**Fase 8:** [ ] Pendiente
+**Fase 8:** [ ] En curso (Sesión 8 + siguientes — 25/09/2026)
 
 ---
 
@@ -277,7 +277,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - Perfil `test` (H2) para tests rápidos de slices y perfil `testcontainers` para integración
 - Tests autocontenidos con datos únicos (sin colisiones entre clases)
 
-**Próxima sesión (Fase 8):** Proyecto Integrador Final — sistema de e-commerce completo (productos, carrito, pedidos, usuarios con roles)
+**Próxima sesión (Fase 7):** Producción y API docs — Actuator, OpenAPI/Swagger, seguridad por método y perfil `prod`
 
 ### Sesión 7 — 17/09/2026 · Fase 7 ✅
 **Qué hicimos hoy:**
@@ -300,6 +300,27 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - 401 = no autenticado vs 403 = autenticado sin rol (verificado en la prueba del 403)
 - Secreto JWT por variables de entorno en prod (no hardcodeado en el repo)
 - Actuator en el mismo puerto que la API (health e info, sin métricas por ahora)
+
+---
+
+### Sesión 8 — 25/09/2026 · Fase 8 🔄
+**Qué hicimos hoy:**
+- **Proyecto nuevo:** `E-commerce.ejercicio3` generado con Spring Initializr (Boot 4.1.1, starter `webmvc`, Lombok)
+- **Modelo de dominio (6 entidades + 2 enums):** `Usuario` (con `Role` ADMIN/USER y `@Enumerated(STRING)`), `Producto` (`nombre`, `precio`, `stock`, `activo`), `Carrito` (1:1 con `Usuario` y Dueño de la relación), `CarritoItem` (con constraint única `(carrito_id, producto_id)` para no duplicar productos), `Pedido` (`estado`, `total`, items anidados), `PedidoItem` (snapshot de nombre y precio con `precioUnitario`)
+- **Conceptos clave en clase:** por qué `@Enumerated(STRING)` y no ORDINAL; `@JoinColumn` (FK de la propia tabla) vs `@JoinTable` (tabla puente); la multiplicidad la decide el tipo Java del campo y no la FK; `@OneToOne` solo se mapea en el lado dueño; `orphanRemoval` para limpiar hijos al borrar; el snapshot como "ticket de compra" que no cambia si la tienda modifica precios
+- **Repositorios:** 5 interfaces JPA con consultas derivadas (`findByUsername`, `existsByEmail`, `findByActivoTrue`, `findByCarritoAndProducto`, `findByUsuarioOrderByFechaDesc`); se corrigieron métodos con el nombre derivado mal escrito (`findAllByOrderNombreAsc` → `findAllByOrderByNombreAsc`) y un `findByUsername` sobre `Carrito` que no existe en la entidad
+- **DTOs:** 12 clases en `DTO/`; de entrada con validación (`@NotBlank`, `@Size`, `@NotNull`, `@Positive`, `@Min`, `@Email`) y de salida aplanadas (sin objetos JPA); `CarritoDTO.total` y `subtotal` se calculan en el service (no se guardan)
+- **Subida:** commit `feat(ecommerce)` con el dominio + repositorios y otro con los DTOs; README del proyecto actualizado con su estado
+**Problemas resueltos:**
+- Métodos derivados que compilan pero fallan al crear el contexto (Spring no encuentra la propiedad): se revisaron contra los campos reales de cada entidad
+- Campos de DTO que no existían en la entidad (`ProductoDTO.estadoPedido` → `activo`, `UsuarioDTO.nombre` → `email`, `UsuarioCreateDTO.nombre` → `username`)
+- Staging sucio en git: versión corregida sin stagear frente a la antigua staged (se re-stageó todo antes del commit)
+**Decisiones tomadas:**
+- Carrito persistido en BD y dueño de la relación 1:1 (no se mapea la lista en `Usuario`)
+- Stock finito y descontado en la compra con `@Transactional`
+- Snapshot de nombre y precio solo en `PedidoItem`; el carrito lee siempre el precio en vivo del producto
+
+**Próxima sesión (Fase 8):** excepciones personalizadas, `ErrorResponse` y `GlobalExceptionHandler`, y servicios con la lógica de negocio (stock, snapshot y vaciado del carrito)
 
 ---
 
