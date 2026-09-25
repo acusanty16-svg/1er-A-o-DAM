@@ -17,6 +17,7 @@
 |------|-----------|--------|
 | **Modelo de dominio** | 6 entidades: Usuario, Producto, Carrito, CarritoItem, Pedido, PedidoItem + enums Role y EstadoPedido | ✅ |
 | **Repositorios** | 5 repos JPA con consultas derivadas (findByUsername, findByActivoTrue, findByCarritoAndProducto, etc.) | ✅ |
+| **DTOs** | 12 DTOs de entrada/salida con Bean Validation (Producto, Carrito, Pedido, Usuario, Auth) | ✅ |
 | **Servicios** | Lógica de negocio: stock transaccional, snapshot de precio, vaciado del carrito | 🔄 En curso |
 | **Controladores** | REST endpoints con validación y manejo de errores | 🔜 |
 | **Seguridad** | JWT + roles ADMIN/USER + @PreAuthorize | 🔜 |
@@ -76,12 +77,18 @@ E-commerce.ejercicio3/
 │   │   │   ├── EstadoPedido.java    # Enum: PENDIENTE, PAGADO, CANCELADO
 │   │   │   ├── Pedido.java          # Pedidos realizados
 │   │   │   └── PedidoItem.java      # Items del pedido (snapshot de precio y nombre)
-│   │   └── repository/
-│   │       ├── UsuarioRepository.java
-│   │       ├── ProductoRepository.java
-│   │       ├── CarritoRepository.java
-│   │       ├── CarritoItemRepository.java
-│   │       └── PedidoRepository.java
+│   │   ├── repository/
+│   │   │   ├── UsuarioRepository.java
+│   │   │   ├── ProductoRepository.java
+│   │   │   ├── CarritoRepository.java
+│   │   │   ├── CarritoItemRepository.java
+│   │   │   └── PedidoRepository.java
+│   │   └── DTO/
+│   │       ├── LoginDTO.java, LoginResponseDTO.java, UsuarioCreateDTO.java
+│   │       ├── ProductoCreateDTO.java, ProductoDTO.java
+│   │       ├── CarritoItemCreateDTO.java, CarritoItemUpdateDTO.java
+│   │       ├── CarritoItemDTO.java, CarritoDTO.java, PedidoItemDTO.java, PedidoDTO.java
+│   │       └── UsuarioDTO.java
 │   └── main/resources/
 │       └── application.properties
 │   └── test/java/.../
