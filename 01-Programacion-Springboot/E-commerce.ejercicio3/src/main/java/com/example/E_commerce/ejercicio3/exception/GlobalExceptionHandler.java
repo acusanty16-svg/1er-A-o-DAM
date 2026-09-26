@@ -12,7 +12,20 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+Manejador Global de excepciones con cada uno de sus metodos correspondientes:
+    -crearErrorResponse: metodo privado auxiliar que simplifica la creacion del objeto (ErrorResponse)
+    -handleValidationErrors: intercepta los fallos de Bean Validation y devuelve un 400 Bad Request
+    -handleStockInsuficiente: Maneja la excepción lanzada cuando se intenta agregar o comprar un producto con menos stock del solicitado
+    -handleCarritoVacio: Maneja la excepción lanzada cuando se intenta procesar un carrito de compras
+    -handleProductoNotFound: Maneja la excepción lanzada cuando no se encuentra el producto
+    -handleUsuarioNotFound: Maneja la excepción lanzada cuando no se encuentra un usuario registrado en la base de datos.
+    -handleCarritoItemNotFound: Maneja la excepción lanzada cuando un ítem solicitado no existe dentro del carrito de compras.
+    -handlePedidoNotFound: Maneja la excepción lanzada cuando se intenta consultar, actualizar o procesar un pedido inexistente.
+    -handleRuntimeException: Captura cualquier excepción genérica no controlada de tiempo de ejecución (RuntimeException).
+    Funciona como la última red de seguridad para evitar exponer trazas internas del servidor (stack traces).
 
+*/
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private ErrorResponse crearErrorResponse(int status, String error, String message, String path){
