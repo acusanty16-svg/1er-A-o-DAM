@@ -136,7 +136,8 @@ El curso está dividido en **8 fases** progresivas:
         ├── model/                         ← Usuario, Producto, Carrito, CarritoItem, Pedido, PedidoItem
         ├── repository/                    ← 5 repositorios JPA
         ├── DTO/                           ← 12 DTOs de entrada y salida
-        └── exception/                     ← Excepciones custom + ErrorResponse + GlobalExceptionHandler
+        ├── exception/                     ← Excepciones custom + ErrorResponse + GlobalExceptionHandler
+        └── service/                       ← Lógica de negocio (Producto, Carrito, Pedido)
 ```
 
 ---

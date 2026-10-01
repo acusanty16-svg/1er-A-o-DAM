@@ -313,12 +313,20 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - **Subida:** commit `feat(ecommerce)` con el dominio + repositorios y otro con los DTOs; README del proyecto actualizado con su estado
 - **Excepciones (8 clases en `exception/`):** `ProductoNotFoundException`, `UsuarioNotFoundException`, `CarritoItemNotFoundException`, `PedidoNotFoundException`, `StockInsuficienteException`, `CarritoVacioException`, `ErrorResponse` (cuerpo uniforme: timestamp, status, error, message, path) y `GlobalExceptionHandler` con `@RestControllerAdvice` (400 para validación/stock/carrito vacío y genérico; 404 para los NotFound) — el código >400 semántico y uniforme para toda la API
 - **Error didáctico resuelto:** el `GlobalExceptionHandler` no compilaba porque Boot 4.1.1 (maven-compiler-plugin 3.15) no descubre Lombok del classpath por defecto → se añadió el bloque `annotationProcessorPaths` en `maven-compiler-plugin` (igual que en `ejercicio2`); este fue el primer sitio del proyecto que invocaba un constructor generado por Lombok, así que el error no había aparecido antes
+- **Servicios (3 clases en `service/`):** `ProductoService` (listado de activos con `findByActivoTrue`, alta, actualización y baja lógica), `CarritoService` (carrito único por usuario, alta de ítems con validación de stock y constraint `(carrito, producto)`, actualización de cantidad, borrado de ítems y vaciado) y `PedidoService` (creación del pedido desde el carrito, snapshot de nombre y precio, descuento de stock y vaciado del carrito)
+- **Conceptos clave en clase:** `@Transactional` como red de seguridad de la compra (si un ítem falla por stock, se revierten los descuentos de los anteriores, porque se valida y descuenta en el mismo bucle); diferencia entre leer un precio en vivo (el carrito siempre lee `Producto.precio`) y congelarlo (el pedido guarda el snapshot para que el histórico no cambie); reutilización de `vaciarCarrito` de `CarritoService` en lugar de duplicar el `clear()`; los `subtotal` y `total` se calculan al mapear a DTO y no se guardan en BD
 **Problemas resueltos:**
+- `PedidoService` arrancaba con `toDto` a medio escribir (usaba `LocalDateTime.now()` en lugar de `Pedido.getFecha()` y le faltaban argumentos) → se completó con fecha, estado y total de la entidad
+- `addItem` recibía el DTO de salida `CarritoItemDTO` (con `id`) en lugar del de entrada `CarritoItemCreateDTO`, y hacía `findById` de un id que el cliente no envía
+- `removeItem` comparaba el id del ítem contra el id del carrito, así que nunca encontraba el ítem a borrar
+- `ProductoService` listaba todos los productos en vez de solo los activos, y devolvía el DTO en el borrado en lugar de `void`
 - Métodos derivados que compilan pero fallan al crear el contexto (Spring no encuentra la propiedad): se revisaron contra los campos reales de cada entidad
 - Campos de DTO que no existían en la entidad (`ProductoDTO.estadoPedido` → `activo`, `UsuarioDTO.nombre` → `email`, `UsuarioCreateDTO.nombre` → `username`)
 - Staging sucio en git: versión corregida sin stagear frente a la antigua staged (se re-stageó todo antes del commit)
 - `.mvnw clean` fallaba al no poder borrar `target/` por el atributo `ReparsePoint` (marca de OneDrive) → se elimina `target` manualmente antes de los clean
 - En `GlobalExceptionHandler`, el campo `error` era el nombre de la excepción (`"Stock Insuficiente"`) y ahora es siempre el texto del status (`"Bad Request"`, `"Not Found"`), como en `ejercicio2`
+- Javadoc copiado de `ProductoService` a `CarritoService` y `PedidoService` (descripciones que no correspondían a esos servicios) → se reescribieron describiendo los métodos reales de cada uno
+- La carpeta de servicios se creó como `services/` y se renombró a `service/` para seguir la convención de `ejercicio2`
 **Decisiones tomadas:**
 - Carrito persistido en BD y dueño de la relación 1:1 (no se mapea la lista en `Usuario`)
 - Stock finito y descontado en la compra con `@Transactional`
@@ -326,7 +334,7 @@ Que el estudiante entienda Spring Boot en su totalidad: cómo funciona por dentr
 - `DELETE /productos/{id}` será borrado lógico (campo `activo=false`) y no físico
 - El carrito y los pedidos resolverán el usuario logueado desde el contexto de autenticación (`@AuthenticationPrincipal`), no por el body; el `AuthController` se deja para la sesión de Seguridad
 
-**Próxima sesión (Fase 8):** servicios con la lógica de negocio — `ProductoService`, `CarritoService` (subtotal/total y vaciado) y `PedidoService` (`@Transactional`, validación de stock y snapshot en la compra)
+**Próxima sesión (Fase 8):** controladores REST — `ProductoController` (catálogo público, escritura solo admin), `CarritoController` (con `@AuthenticationPrincipal` para resolver el usuario del contexto) y `PedidoController` (crear pedido, mis pedidos y consulta por id con `@PreAuthorize` por rol)
 
 ---
 
