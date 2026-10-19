@@ -80,7 +80,7 @@ El curso está dividido en **8 fases** progresivas:
 │           ├── service/ProductoService.java
 │           └── controller/ProductoController.java
 │
-└── ejercicio2/                            ← Proyecto 2: Sistema de Biblioteca
+└── BibliotecaSpring/                      ← Proyecto 2: Sistema de Biblioteca
     ├── docker-compose.yml                 ← PostgreSQL en Docker (puerto 5433)
     ├── pom.xml                            ← Dependencias Maven
     ├── README.md                          ← Documentación del proyecto
@@ -166,11 +166,11 @@ docker-compose up -d
 # http://localhost:8080
 ```
 
-### Proyecto 2: Sistema de Biblioteca (ejercicio2)
+### Proyecto 2: Sistema de Biblioteca (BibliotecaSpring)
 
 ```bash
 # 1. Navegar a la carpeta del proyecto
-cd "01-Programacion-Springboot/ejercicio2"
+cd "01-Programacion-Springboot/BibliotecaSpring"
 
 # 2. Levantar PostgreSQL con Docker
 docker-compose up -d
@@ -297,7 +297,7 @@ Invoke-WebRequest -Uri "http://localhost:8081/api/prestamos/ID_DEL_PRESTAMO/devo
 - **Seguridad por rol a nivel de método:** `@PreAuthorize("hasRole('ADMIN')")` en los POST de autores y libros; préstamos para cualquier usuario autenticado
 - **`@EnableMethodSecurity`:** activa la validación de `@PreAuthorize` sobre los controladores
 - **Perfil `prod`:** Swagger desactivado, JWT por variables de entorno (`JWT_SECRET`), `open-in-view: false`, `ddl-auto: validate`
-- **Script de arranque:** `ejercicio2/run-prod.ps1` para levantar el perfil de producción con doble clic
+- **Script de arranque:** `BibliotecaSpring/run-prod.ps1` para levantar el perfil de producción con doble clic
 - **Código: 57 tests verdes**, incluyendo `crearAutor_sinRolAdmin_deberiaRetornar403`
 
 ---
