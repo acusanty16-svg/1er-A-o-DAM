@@ -54,7 +54,7 @@ Aprender a construir una API REST completa con:
 ## 📁 Estructura del proyecto
 
 ```
-ejercicio2/
+BibliotecaSpring/
 ├── docker-compose.yml          # PostgreSQL en Docker
 ├── pom.xml                     # Dependencias Maven
 ├── src/
